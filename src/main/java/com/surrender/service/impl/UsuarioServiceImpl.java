@@ -43,4 +43,20 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
             return null;
         }
     }
+
+    @Override
+    public Usuario modificar(Usuario usuario) {
+        logger.info("Modificando usuario con id: {}", usuario.getId());
+        Optional<Usuario> existe = usuarioRepo.findById(usuario.getId());
+        if (existe.isPresent()) {
+            Usuario usuarioExistente = existe.get();
+            usuario.setPassword(usuarioExistente.getPassword()); 
+            Usuario actualizado = usuarioRepo.save(usuario);
+            logger.info("Usuario modificado exitosamente: {}", actualizado.getEmail());
+            return actualizado;
+        } else {
+            logger.warn("Intento de modificación fallido: usuario con id {} no encontrado", usuario.getId());
+            return null;
+        }
+    }
 }

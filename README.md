@@ -30,6 +30,32 @@ Este proyecto es el backend de una aplicación de gestión de alquileres de vivi
 - En el paquete `service.impl` se encuentra la clase abstracta `CRUDImpl<T, ID>`, que implementa la lógica genérica de los métodos CRUD y paginación usando el repositorio correspondiente.
 - Las implementaciones concretas (`UsuarioServiceImpl`, `InquilinoServiceImpl`, `TokenServiceImpl`) extienden de `CRUDImpl` y definen el repositorio a utilizar.
 
+### Lógica de modificación de usuario
+
+En `UsuarioServiceImpl`, el método `modificar(Usuario usuario)` implementa la lógica para actualizar un usuario existente:
+- Busca el usuario por ID.
+- Si existe, mantiene la contraseña original (no permite cambiarla ni la recodifica desde este endpoint) y actualiza el resto de los datos.
+- Se registran logs informativos y de advertencia según el resultado.
+
+**Ejemplo de lógica aplicada:**
+```java
+@Override
+public Usuario modificar(Usuario usuario) {
+    logger.info("Modificando usuario con id: {}", usuario.getId());
+    Optional<Usuario> existe = usuarioRepo.findById(usuario.getId());
+    if (existe.isPresent()) {
+        Usuario usuarioExistente = existe.get();
+        usuario.setPassword(usuarioExistente.getPassword());
+        Usuario actualizado = usuarioRepo.save(usuario);
+        logger.info("Usuario modificado exitosamente: {}", actualizado.getEmail());
+        return actualizado;
+    } else {
+        logger.warn("Intento de modificación fallido: usuario con id {} no encontrado", usuario.getId());
+        return null;
+    }
+}
+```
+
 ## DTO de respuesta unificada
 - Se creó el DTO genérico `APIResponseDTO<T>` en el paquete `dto`, que será la única forma de respuesta para todos los controllers.
 - Sus campos son:
