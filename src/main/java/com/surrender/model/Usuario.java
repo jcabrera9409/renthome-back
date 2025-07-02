@@ -1,6 +1,10 @@
 package com.surrender.model;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblUsuario")
-public class Usuario {
+public class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,5 +83,15 @@ public class Usuario {
 
 	public void setCasas(List<Casa> casas) {
 		this.casas = casas;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
 	}
 }

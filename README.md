@@ -65,16 +65,52 @@ Este proyecto es el backend de una aplicación de gestión de alquileres de vivi
    ./mvnw spring-boot:run
    ```
 
-## Notas
-- El proyecto está preparado para usarse con Java 21.
-- El código fuente principal se encuentra en `src/main/java/com/surrender/`.
-- Los modelos de datos están en `src/main/java/com/surrender/model/`.
-- Los repositorios se encuentran en `src/main/java/com/surrender/repo/` y siguen una estructura genérica para facilitar la escalabilidad.
-- Los servicios y sus implementaciones están en `src/main/java/com/surrender/service/` y `src/main/java/com/surrender/service/impl/` respectivamente, siguiendo una arquitectura limpia y reutilizable.
-- El DTO `APIResponseDTO` en `src/main/java/com/surrender/dto/` centraliza la respuesta de todos los endpoints.
-- Los controladores REST están en `src/main/java/com/surrender/controller/` y exponen endpoints CRUD y de paginación bajo el prefijo `/v1`.
-- La lógica CRUD genérica y la abstracción de repositorios permiten un desarrollo más rápido y menos repetitivo para nuevas entidades.
-- La gestión de tokens JWT está centralizada y asociada a la entidad usuario.
+## Seguridad y Autenticación
+
+El proyecto implementa seguridad robusta basada en JWT y Spring Security, siguiendo buenas prácticas y una arquitectura desacoplada y escalable.
+
+### Componentes principales de seguridad
+
+- **Spring Security**: Se utiliza para proteger los endpoints REST y gestionar la autenticación y autorización.
+- **JWT (JSON Web Token)**: Los tokens se generan al autenticar un usuario y se almacenan en la base de datos (entidad `Token`).
+- **PasswordEncoder**: Las contraseñas de los usuarios se almacenan de forma segura usando BCrypt.
+- **Filtros y handlers personalizados**:
+  - `JwtAuthenticationFilter`: Filtro que intercepta cada petición HTTP, valida el JWT y establece el usuario autenticado en el contexto de seguridad.
+  - `CustomLogoutHandler`: Handler que marca el token como cerrado (logged out) en la base de datos al hacer logout.
+- **UserDetailsServiceImpl**: Implementación personalizada de `UserDetailsService` que permite a Spring Security cargar usuarios desde la base de datos usando el email.
+- **Configuración centralizada**:
+  - `SecurityConfig`: Define la cadena de filtros, endpoints públicos, manejo de sesión stateless, integración del filtro JWT y logout seguro.
+  - Inyección de dependencias por constructor para mayor claridad y testabilidad.
+
+### Flujo de autenticación y autorización
+
+1. **Login**: El usuario envía sus credenciales a `/v1/auth/login`. Si son válidas, se genera un JWT y se almacena en la tabla `Token`.
+2. **Acceso a endpoints protegidos**: El cliente debe enviar el JWT en la cabecera `Authorization: Bearer <token>`. El filtro `JwtAuthenticationFilter` valida el token y autentica al usuario.
+3. **Logout**: Al llamar a `/logout`, el `CustomLogoutHandler` marca el token como cerrado en la base de datos, invalidando su uso futuro.
+4. **Gestión de contraseñas**: Las contraseñas se almacenan siempre encriptadas con BCrypt.
+
+### Endpoints públicos y protegidos
+- **Públicos**: `/v1/auth/login/**`, `/v1/auth/recover_password/**`, `/v1/auth/reset_password/**`, `/v1/usuarios/**`
+- **Protegidos**: Todos los demás requieren JWT válido.
+
+### Configuración de propiedades
+En `application.properties`:
+```
+security.jwt.secret-key=${JWT_SECRET_KEY}
+security.jwt.access-token-expiration=43200000
+security.jwt.refresh-token-expiration=86400000
+```
+
+### Paquetes y clases relevantes
+- `com.surrender.security`: Filtros y handlers de seguridad personalizados.
+- `com.surrender.service.impl`: Servicios de autenticación y JWT.
+- `com.surrender.configuration.SecurityConfig`: Configuración principal de seguridad.
+
+### Buenas prácticas aplicadas
+- Inyección de dependencias por constructor en componentes de seguridad.
+- Clases de filtro y handler marcadas como `final` (excepto `@Configuration`).
+- Comentarios clave en los puntos críticos del flujo de seguridad.
+- Cohesión de clases y separación clara de responsabilidades.
 
 ---
 Generado automáticamente a partir del análisis del código fuente y archivos de configuración.
