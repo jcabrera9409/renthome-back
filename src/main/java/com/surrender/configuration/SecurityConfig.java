@@ -47,7 +47,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/v1/auth/login/**", "/v1/auth/recover_password/**", "/v1/auth/reset_password/**", "/v1/auth/register/**")
+                        .requestMatchers("/v1/auth/login/**", "/v1/auth/recover_password/**", "/v1/auth/reset_password/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)

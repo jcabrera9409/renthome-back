@@ -20,13 +20,9 @@ public class AuthenticationController {
   private AuthenticationService authService;
 
   @PostMapping("/login")
-  public ResponseEntity<AuthenticationResponse> login(
-      @RequestBody Usuario request) {
-    AuthenticationResponse response = authService.authenticate(request);
-    if (response.getAccessToken() != null) {
-      return new ResponseEntity<AuthenticationResponse>(response, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<AuthenticationResponse>(response, HttpStatus.UNAUTHORIZED);
-    }
+  public ResponseEntity<AuthenticationResponse> login(@RequestBody Usuario request) {
+      AuthenticationResponse response = authService.authenticate(request);
+      HttpStatus status = (response.getAccessToken() != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+      return ResponseEntity.status(status).body(response);
   }
 }

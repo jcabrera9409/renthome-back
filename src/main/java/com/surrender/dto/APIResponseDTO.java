@@ -21,6 +21,14 @@ public class APIResponseDTO<T> {
         this.timestamp = LocalDateTime.now();
     }
 
+    public static <T> APIResponseDTO<T> success(String message, T data, int statusCode) {
+		return new APIResponseDTO<>(true, message, data, statusCode);
+	}
+	
+	public static <T> APIResponseDTO<T> error(String message, int statusCode) {
+		return new APIResponseDTO<>(false, message, null, statusCode);
+	}
+
     public boolean isSuccess() {
         return success;
     }

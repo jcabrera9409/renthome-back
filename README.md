@@ -39,6 +39,21 @@ Este proyecto es el backend de una aplicación de gestión de alquileres de vivi
   - `int statusCode`: Código de estado HTTP asociado.
   - `LocalDateTime timestamp`: Fecha y hora de la respuesta.
 
+### Respuestas unificadas con APIResponseDTO
+
+Para garantizar una estructura de respuesta consistente en toda la API, se utiliza el DTO genérico `APIResponseDTO<T>`. Este DTO incluye métodos estáticos de conveniencia:
+
+- `APIResponseDTO.success(String message, T data, int statusCode)`: genera una respuesta exitosa con mensaje, datos y código de estado.
+- `APIResponseDTO.error(String message, int statusCode)`: genera una respuesta de error con mensaje y código de estado, sin datos.
+
+Esto permite a los controladores construir respuestas limpias y estandarizadas, facilitando el consumo y manejo de errores en el frontend y la mantenibilidad del backend.
+
+**Ejemplo de uso:**
+```java
+return APIResponseDTO.success("Usuario creado", usuario, 201);
+return APIResponseDTO.error("No autorizado", 401);
+```
+
 ## Controladores REST
 - Los controladores `UsuarioController` e `InquilinoController` se encuentran en el paquete `controller`.
 - Todos los endpoints están bajo el prefijo `/v1` (por ejemplo, `/v1/usuarios`, `/v1/inquilinos`).
@@ -46,6 +61,41 @@ Este proyecto es el backend de una aplicación de gestión de alquileres de vivi
 - Los controladores implementan operaciones CRUD completas para sus respectivas entidades.
 - Ambos controladores exponen un endpoint `/filtrar` que permite obtener resultados paginados usando parámetros de Spring Data (`Pageable`).
 - La gestión de tokens se realiza a través del controlador de usuario, no existe un controlador dedicado para tokens.
+
+### Patrón de controladores y servicios (actualizado)
+
+A partir de la refactorización aplicada, la arquitectura de controladores y servicios sigue este patrón:
+
+- **Servicios**: Devuelven objetos de dominio o DTOs de negocio (por ejemplo, `Usuario`, `Inquilino`, `Page<Usuario>`, etc.), nunca un `APIResponseDTO`. Toda la lógica de negocio, validación y acceso a datos se realiza aquí.
+- **Controladores**: Reciben el resultado del servicio y construyen el `APIResponseDTO` usando los métodos estáticos `success` y `error`. El controlador es responsable de asignar el código de estado HTTP y envolver la respuesta en un `ResponseEntity`.
+- **Ventajas**: 
+  - Separación clara de responsabilidades: la lógica de negocio no depende de la presentación.
+  - Controladores delgados y fáciles de mantener.
+  - Respuestas unificadas y consistentes en toda la API.
+
+#### Ejemplo de patrón aplicado
+```java
+// Servicio
+public Inquilino registrar(Inquilino inquilino) { ... }
+
+// Controlador
+@PostMapping
+public ResponseEntity<APIResponseDTO<Inquilino>> registrar(@RequestBody Inquilino inquilino) {
+    Inquilino nuevo = inquilinoService.registrar(inquilino);
+    APIResponseDTO<Inquilino> response = (nuevo != null)
+        ? APIResponseDTO.success("Inquilino registrado", nuevo, 201)
+        : APIResponseDTO.error("No se pudo registrar el inquilino", 400);
+    return ResponseEntity.status(response.isSuccess() ? 201 : 400).body(response);
+}
+```
+
+#### Notas adicionales
+- El DTO `APIResponseDTO` centraliza la estructura de respuesta y expone métodos estáticos para construir respuestas de éxito o error.
+- El código de estado HTTP se asigna en el controlador según el resultado de la operación.
+- Este patrón se aplica a todos los controladores principales (`UsuarioController`, `InquilinoController`, etc.).
+
+---
+Generado automáticamente a partir del análisis del código fuente y archivos de configuración.
 
 ## Configuración
 - **application.properties**: Configuración de la aplicación, incluyendo conexión a la base de datos mediante variables de entorno.
@@ -111,6 +161,3 @@ security.jwt.refresh-token-expiration=86400000
 - Clases de filtro y handler marcadas como `final` (excepto `@Configuration`).
 - Comentarios clave en los puntos críticos del flujo de seguridad.
 - Cohesión de clases y separación clara de responsabilidades.
-
----
-Generado automáticamente a partir del análisis del código fuente y archivos de configuración.
