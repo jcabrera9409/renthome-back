@@ -107,6 +107,7 @@ Generado automáticamente a partir del análisis del código fuente y archivos d
 - `mysql-connector-j`: Driver para MySQL.
 - `spring-boot-starter-hateoas`: Para hipermedios en las respuestas REST.
 - `spring-boot-starter-test`: Para pruebas.
+- `org.slf4j:slf4j-api`: API de logging utilizada en todo el backend.
 
 ## Ejecución
 1. Configura las variables de entorno en el archivo `.env`.
@@ -161,3 +162,4 @@ security.jwt.refresh-token-expiration=86400000
 - Clases de filtro y handler marcadas como `final` (excepto `@Configuration`).
 - Comentarios clave en los puntos críticos del flujo de seguridad.
 - Cohesión de clases y separación clara de responsabilidades.
+- **Logging profesional**: Todos los controladores, servicios y componentes de seguridad implementan SLF4J para trazabilidad y diagnóstico.
