@@ -189,3 +189,43 @@ security.jwt.refresh-token-expiration=86400000
 - Comentarios clave en los puntos críticos del flujo de seguridad.
 - Cohesión de clases y separación clara de responsabilidades.
 - **Logging profesional**: Todos los controladores, servicios y componentes de seguridad implementan SLF4J para trazabilidad y diagnóstico.
+
+## Configuración CORS global
+
+Para permitir solicitudes desde cualquier origen (CORS), el proyecto implementa un filtro personalizado en `com.surrender.configuration.CORS`. Este filtro:
+- Permite todos los orígenes (`Access-Control-Allow-Origin: *`).
+- Permite los métodos HTTP estándar (`DELETE, GET, OPTIONS, PATCH, POST, PUT`).
+- Permite headers comunes y de autenticación.
+- Responde automáticamente a las solicitudes `OPTIONS` con estado 200.
+- Se ejecuta con la máxima prioridad gracias a `@Order(Ordered.HIGHEST_PRECEDENCE)`.
+
+**Ubicación:**
+- `src/main/java/com/surrender/configuration/CORS.java`
+
+**Motivación:**
+- Centraliza la configuración CORS fuera de los controladores y la seguridad, manteniendo la arquitectura limpia y desacoplada.
+- Facilita el mantenimiento y futuras modificaciones de políticas CORS.
+
+**Ejemplo de implementación:**
+```java
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CORS implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletRequest request = (HttpServletRequest) req;
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, PATCH, POST, PUT");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            chain.doFilter(req, res);
+        }
+    }
+    // ...existing code...
+}
+```
