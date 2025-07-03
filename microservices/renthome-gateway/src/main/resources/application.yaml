@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: renthome-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: core
+        uri: lb://renthome-core
+        predicates:
+          - Path=/v1/**
+      - id: auth
+        uri: lb://renthome-security
+        predicates:
+          - Path=/auth/**
+
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+server:
+  port: 8099

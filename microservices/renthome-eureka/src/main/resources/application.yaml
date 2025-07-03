@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: renthome-eureka
+
+server:
+  port: 8761
+  
+eureka:
+  instance:
+    hostname: localhost
