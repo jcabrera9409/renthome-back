@@ -64,5 +64,5 @@ jobs:
           scan-type: 'fs'
           scan-ref: 'monolito'
           ignore-unfixed: true
-          severity: 'CRITICAL,HIGHT'
+          severity: 'CRITICAL,HIGH'
   
