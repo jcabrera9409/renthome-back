@@ -1,5 +1,6 @@
 package com.surrender.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -97,10 +98,10 @@ public class UnidadHabitacional {
 	}
 
 	public List<Contrato> getContratos() {
-		return contratos;
+		return contratos != null ? new ArrayList<>(contratos) : new ArrayList<>();
 	}
 
 	public void setContratos(List<Contrato> contratos) {
-		this.contratos = contratos;
+		this.contratos = contratos != null ? new ArrayList<>(contratos) : new ArrayList<>();
 	}	
 }

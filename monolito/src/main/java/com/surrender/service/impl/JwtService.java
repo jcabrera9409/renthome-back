@@ -62,7 +62,7 @@ public class JwtService {
             .map(t -> !t.isLoggedOut())
             .orElse(false);
         
-        return (username.equals(user.getUsername())) && !isTokenExpired(token) && isValidToken;
+        return username.equals(user.getUsername()) && !isTokenExpired(token) && isValidToken;
     }
     
     public boolean isValidRefreshToken(String token, Usuario usuario) {
@@ -73,7 +73,7 @@ public class JwtService {
                 .map(t -> !t.isLoggedOut())
                 .orElse(false);
 
-        return (username.equals(usuario.getUsername())) && !isTokenExpired(token) && validRefreshToken;
+        return username.equals(usuario.getUsername()) && !isTokenExpired(token) && validRefreshToken;
     }
 
     private boolean isTokenExpired(String token) {

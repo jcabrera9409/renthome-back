@@ -1,5 +1,6 @@
 package com.surrender.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -56,18 +57,18 @@ public class Casa {
 	}
 
 	public List<UnidadHabitacional> getUnidades() {
-		return unidades;
+		return unidades != null ? new ArrayList<>(unidades) : new ArrayList<>();
 	}
 
 	public void setUnidades(List<UnidadHabitacional> unidades) {
-		this.unidades = unidades;
+		this.unidades = unidades != null ? new ArrayList<>(unidades) : new ArrayList<>();
 	}
 
 	public List<Usuario> getUsuarios() {
-		return usuarios;
+		return usuarios != null ? new ArrayList<>(usuarios) : new ArrayList<>();
 	}
 
 	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+		this.usuarios = usuarios != null ? new ArrayList<>(usuarios) : new ArrayList<>();
 	}
 }

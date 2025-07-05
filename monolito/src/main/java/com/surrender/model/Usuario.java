@@ -1,5 +1,6 @@
 package com.surrender.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,11 +80,11 @@ public class Usuario implements UserDetails {
 	}
 
 	public List<Casa> getCasas() {
-		return casas;
+		return casas != null ? new ArrayList<>(casas) : new ArrayList<>();
 	}
 
 	public void setCasas(List<Casa> casas) {
-		this.casas = casas;
+		this.casas = casas != null ? new ArrayList<>(casas) : new ArrayList<>();
 	}
 
 	@Override

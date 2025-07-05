@@ -1,6 +1,7 @@
 package com.surrender.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -109,10 +110,10 @@ public class Contrato {
 	}
 
 	public List<Recibo> getRecibos() {
-		return recibos;
+		return recibos != null ? new ArrayList<>(recibos) : new ArrayList<>();
 	}
 
 	public void setRecibos(List<Recibo> recibos) {
-		this.recibos = recibos;
+		this.recibos = recibos != null ? new ArrayList<>(recibos) : new ArrayList<>();
 	}
 }

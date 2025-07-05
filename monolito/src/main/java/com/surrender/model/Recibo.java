@@ -1,6 +1,7 @@
 package com.surrender.model;
 
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -77,10 +78,10 @@ public class Recibo {
 	}
 
 	public List<DetalleRecibo> getDetalle() {
-		return detalle;
+		return detalle != null ? new ArrayList<>(detalle) : new ArrayList<>();
 	}
 
 	public void setDetalle(List<DetalleRecibo> detalle) {
-		this.detalle = detalle;
+		this.detalle = detalle != null ? new ArrayList<>(detalle) : new ArrayList<>();
 	}
 }
