@@ -58,11 +58,13 @@ jobs:
     needs: dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Run Trivy vulnerability scanner in IaC mode
+      - name: List files
+        run: ls -al
+      - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scan-ref: './monolito'
+          scan-ref: '/renthome-back/monolito'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
   
