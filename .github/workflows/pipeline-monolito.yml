@@ -2,10 +2,10 @@ name: Deployment Pipeline For Monolito Project
 
 on: 
   push:
-    paths: ['monolito/**']
-    branches: [master]
+    paths: ['monolito/**', '.github/workflows/pipeline-monolito.yml']
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:
@@ -53,4 +53,15 @@ jobs:
         with:
           name: build-artifact
           path: target
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scan-ref: 'monolito'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGHT'
   
