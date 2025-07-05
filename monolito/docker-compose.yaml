@@ -1,0 +1,21 @@
+services:
+  bd:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${NAME_BD}
+
+  backend:
+    image: jcabrera9409/renthome:latest
+    environment:
+      HOST_BD: bd
+      PORT_BD: 3306
+      NAME_BD: ${NAME_BD}
+      USER_BD: root
+      PASSWORD_BD: ${PASSWORD_BD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - bd
+    restart: on-failure
