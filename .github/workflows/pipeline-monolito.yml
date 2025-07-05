@@ -1,0 +1,64 @@
+name: Deployment Pipeline For Monolito Project
+
+on: 
+  push:
+    paths: ['monolito/**']
+    branches: [master]
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  avoid_redundant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Redundant Builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+      - name: Download Maven dependencies
+        run: | 
+          cd monolito 
+          mvn dependency:go-offline
+
+  verify:
+    needs: dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+      - name: Build with 'maven'
+        run: |
+          cd monolito
+          mvn -B verify --file pom.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: target
+  
+  trivy:
+    - name: Run Trivy vulnerability scanner in IaC mode
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: 'fs'
+        scan-ref: 'monolito'
+        ignore-unfixed: true
+        severity: 'CRITICAL,HIGHT'
