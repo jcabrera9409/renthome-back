@@ -2,8 +2,10 @@ services:
   bd:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_BD}
       MYSQL_DATABASE: ${NAME_BD}
+    volumes:
+      - ./mysql-data:/var/lib/mysql
 
   backend:
     image: jcabrera9409/renthome:latest
@@ -19,3 +21,4 @@ services:
     depends_on:
       - bd
     restart: on-failure
+
