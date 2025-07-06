@@ -87,4 +87,4 @@ jobs:
           context: ./monolito
           file: ./monolito/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/renthome:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/renthome:latest 
