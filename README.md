@@ -149,6 +149,39 @@ mvn spring-boot:run
 - Eureka Dashboard: http://localhost:8761
 - API Gateway: http://localhost:8099
 
+## Comandos útiles
+
+- Levantar todos los servicios con Docker Compose:
+  ```zsh
+  cd microservices
+  docker-compose up --build
+  ```
+- Detener todos los servicios:
+  ```zsh
+  docker-compose down
+  ```
+- Levantar el monolito:
+  ```zsh
+  cd monolito
+  ./mvnw spring-boot:run
+  ```
+- Levantar microservicios individualmente:
+  ```zsh
+  cd microservices/renthome-eureka && ./mvnw spring-boot:run
+  cd microservices/renthome-security && ./mvnw spring-boot:run
+  cd microservices/renthome-core && ./mvnw spring-boot:run
+  cd microservices/renthome-gateway && ./mvnw spring-boot:run
+  ```
+
+## Troubleshooting
+
+- Si los microservicios no se registran en Eureka, revisa la variable de entorno `EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE` y que Eureka esté corriendo en el puerto 8761.
+- Si tienes problemas de conexión a MySQL, revisa el archivo `.env` y los permisos del usuario.
+- Para ver los logs de cada servicio, usa:
+  ```zsh
+  docker-compose logs <servicio>
+  ```
+
 ## API Endpoints
 
 ### Autenticación (Ambas arquitecturas)

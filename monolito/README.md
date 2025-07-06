@@ -142,6 +142,34 @@ Generado automáticamente a partir del análisis del código fuente y archivos d
    ./mvnw spring-boot:run
    ```
 
+## Ejemplos de uso de endpoints
+
+### Autenticación
+```zsh
+curl -X POST http://localhost:8080/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "usuario@ejemplo.com", "password": "contraseña"}'
+```
+
+### Endpoints protegidos
+```zsh
+curl -X GET http://localhost:8080/v1/inquilinos \
+  -H "Authorization: Bearer [TOKEN]"
+```
+
+## Recomendaciones de desarrollo
+- Usa Java 21+ y Maven 3.6+.
+- Configura correctamente el archivo `.env` en la raíz del monolito.
+- Implementa tests unitarios e integración.
+- Utiliza los logs para depuración y monitoreo.
+
+## Troubleshooting
+- Si tienes problemas de conexión a la base de datos, revisa el archivo `.env` y asegúrate de que MySQL esté corriendo.
+- Para ver los logs de la aplicación, usa:
+  ```zsh
+  ./mvnw spring-boot:run
+  ```
+
 ## Seguridad y Autenticación
 
 El proyecto implementa seguridad robusta basada en JWT y Spring Security, siguiendo buenas prácticas y una arquitectura desacoplada y escalable.
