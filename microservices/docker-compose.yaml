@@ -1,0 +1,48 @@
+services:
+  bd:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_BD}
+      MYSQL_DATABASE: ${NAME_BD}
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  eureka:
+    image: jcabrera9409/renthome-eureka:latest
+    restart: on-failure
+
+  gateway:
+    image: jcabrera9409/renthome-gateway:latest
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    ports:
+      - "8099:8099"
+
+  security:
+    image: jcabrera9409/renthome-security:latest
+    environment:
+      HOST_BD: bd
+      PORT_BD: 3306
+      NAME_BD: ${NAME_BD}
+      USER_BD: root
+      PASSWORD_BD: ${PASSWORD_BD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    depends_on:
+      - bd
+    restart: on-failure
+
+  core:
+    image: jcabrera9409/renthome-core:latest
+    environment:
+      HOST_BD: bd
+      PORT_BD: 3306
+      NAME_BD: ${NAME_BD}
+      USER_BD: root
+      PASSWORD_BD: ${PASSWORD_BD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    depends_on:
+      - bd
+    restart: on-failure
+
