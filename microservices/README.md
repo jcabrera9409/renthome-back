@@ -290,6 +290,34 @@ curl -X GET http://localhost:8099/v1/inquilinos \
   -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9..."
 ```
 
+## Ejemplos de uso de endpoints
+
+### Autenticación
+```zsh
+curl -X POST http://localhost:8099/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "usuario@ejemplo.com", "password": "contraseña"}'
+```
+
+### Endpoints protegidos
+```zsh
+curl -X GET http://localhost:8099/v1/inquilinos \
+  -H "Authorization: Bearer [TOKEN]"
+```
+
+## Recomendaciones de desarrollo
+- Usa Java 21+ y Maven 3.6+.
+- Configura correctamente el archivo `.env` en la raíz de microservices.
+- Usa Spring Boot DevTools para desarrollo local.
+- Implementa tests unitarios e integración para cada microservicio.
+- Utiliza los logs para depuración y monitoreo.
+
+## Troubleshooting y verificación
+- Verifica el registro de servicios en Eureka: http://localhost:8761
+- Si algún servicio no aparece, revisa la configuración de Eureka Client y la red de Docker.
+- Para probar la autenticación y el acceso a endpoints protegidos, utiliza los comandos curl anteriores.
+- Si tienes errores de conexión a la base de datos, revisa el archivo `.env` y asegúrate de que MySQL esté corriendo.
+
 ## Características Técnicas
 
 ### Seguridad
