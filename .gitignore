@@ -60,3 +60,5 @@ build/
 .env
 .mvn
 .gitattributes
+
+mysql-data/
