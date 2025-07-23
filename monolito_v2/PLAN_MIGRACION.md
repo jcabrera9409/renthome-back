@@ -1,71 +1,45 @@
-# 📋 Plan de Migración de Spr**Estado:** Fase 1 ✅ COMPLETADA | Fase 2 ✅ COMPLETADA | Fase 3 ✅ COMPLETADA | Fase 4 📝 PRÓXIMAng Boot (Monol### � FASE 3: EN PROGRESO
-**Migración de Repositorios**
-- [ ] **REFACTORIZACIÓN**: Mover métodos de consulta desde entidades a repositorios dedicados
-- [ ] **PATRÓN REPOSITORY**: Implementar PanacheRepository para mantener separación de responsabilidades
-- [ ] Conversión de interfaces Spring Data JPA a Panache Repository
-- [ ] Migración de métodos de consulta personalizados desde Spring Boot
-- [ ] Creación de repositorios dedicados por entidad:
-  - [ ] `UsuarioRepository` - Con método `findByEmail()` y consultas de autenticación
-  - [ ] `CasaRepository` - Con `findByUsuarioEmail()`, `findByNombre()`, `findByDireccionContaining()`
-  - [ ] `TokenRepository` - Con `findByAccessToken()` y `findByUsuarioIdAndLoggedOutFalse()`
-  - [ ] `InquilinoRepository` - Con consultas específicas de inquilinos
-  - [ ] `ContratoRepository` - Con consultas de contratos activos
-  - [ ] `ReciboRepository` - Con consultas por período y estado de pago
-  - [ ] `TarifaServicioRepository` - Con consultas por tipo y rangos
-- [ ] **LIMPIEZA**: Remover métodos estáticos de consulta de las entidades
-- [ ] **CONVERSIÓN**: Cambiar herencia de `PanacheEntityBase` a `PanacheEntity` en entidades
-- [ ] Implementación de interfaces genéricas siguiendo patrón Spring Boot
-- [ ] Validación de funcionalidad de repositorios
-- [ ] Testing de consultas complejas y relaciones
+# 📋 Plan de Migración de Spring Boot (Monolito) → Quarkus
 
-**Beneficios del cambio:**
-- ✅ Separación clara de responsabilidades (entidades vs repositorios)
-- ✅ Compatibilidad con arquitectura Spring Boot existente  
-- ✅ Facilita migración posterior de servicios en Fase 4
-- ✅ Mejor testabilidad con mocking de repositorios
-- ✅ Entidades más limpias y enfocadas en mapeo de datos Quarkus (Monolito_v2)
+**Estado:** Fase 1 ✅ COMPLETADA | Fase 2 ✅ COMPLETADA | Fase 3 ✅ COMPLETADA | Fase 4 ✅ COMPLETADA | Fase 5 📝 PRÓXIMA
 
-**Versión:** 1.5  
-**Última actualización:** 2025-07-23 16:00:00  
-**Estado:** Fase 1 ✅ COMPLETADA | Fase 2 ✅ COMPLETADA | Fase 3 � PRÓXIMA
+**Actualizado:** 2025-07-23 16:45:00  
+**Versión:** 1.8
+
+## 📋 Resumen de Fases Actualizadas
+
+| Fase | Objetivo | Estado | Descripción |
+|------|----------|--------|-------------|
+| **Fase 1** | ✅ Configuración Base | **COMPLETADA** | Setup Quarkus, dependencias, properties |
+| **Fase 2** | ✅ Entidades | **COMPLETADA** | Migración PanacheEntityBase + Integer ID |
+| **Fase 3** | ✅ Repositorios | **COMPLETADA** | Patrón Repository con PanacheRepository |
+| **Fase 4** | ✅ Servicios Básicos | **COMPLETADA** | CDI Services (sin seguridad) |
+| **Fase 5** | 📝 Seguridad JWT | **PRÓXIMA** | JWT Básico (sin roles) |
+| **Fase 6** | 📝 Mejoras Futuras | Opcional | Roles avanzados (futuro) |
+| **Fase 7** | 📝 Controladores | Pendiente | Spring MVC → JAX-RS |
+| **Fase 8** | 📝 Testing | Pendiente | Pruebas y validación final |
+
+---
 
 ## Estado de las Fases
 
 ### ✅ FASE 1: COMPLETADA (2025-07-23 12:15:00)
+**Configuración Base de Quarkus**
 - [x] Configuración base de Quarkus
 - [x] Migración de dependencias principales  
 - [x] Configuración de properties y variables de entorno
+- [x] Setup de estructura de proyecto
+
+**Resultado:** Proyecto Quarkus funcionando con dependencias básicas
 
 ### ✅ FASE 2: COMPLETADA (2025-07-23 13:30:00)
 **Migración de Entidades**
-- [x] Conversión de entidades Spring Data JPA a Panache
-- [x] Implementación de patrón Active Record
-- [x] Corrección de compatibilidad con base de datos existente
-- [x] Cambio de tipos Long → Integer para coincidir con Spring Boot
-- [x] Ajuste de campos para mantener compatibilidad 100%
-- [x] Validación de compilación exitosa
-- [x] Configuración de generación de esquema de BD
-- [x] **CORRECCIÓN CRÍTICA**: Configuración de Physical Naming Strategy
-- [x] **AJUSTE DE NOMBRES**: Tablas y campos ajustados con PhysicalNamingStrategyStandardImpl
-- [x] **VALIDACIÓN FINAL**: 9 entidades migradas y compilando correctamente
+- [x] **COMPATIBILIDAD BD**: PanacheEntityBase con Integer ID para mantener esquema existente
+- [x] **9 ENTIDADES MIGRADAS**: Usuario, Casa, Token, UnidadHabitacional, Inquilino, Contrato, Recibo, DetalleRecibo, TarifaServicio
+- [x] **NAMING STRATEGY**: PhysicalNamingStrategyStandardImpl configurado
+- [x] **VALIDACIÓN**: Todas las entidades mapean correctamente a tablas existentes
+- [x] **JPA ANNOTATIONS**: @Entity, @Table, @Column, @JoinColumn mantenidas
 
-**Entidades migradas exitosamente:**
-- ✅ **Usuario** (tbl_usuario) - Sin anotaciones de seguridad JPA temporalmente
-- ✅ **Casa** (tbl_casa) - Con relaciones ManyToMany a Usuario  
-- ✅ **Token** (tbl_token) - Para autenticación JWT
-- ✅ **UnidadHabitacional** (tbl_unidad_habitacional) - Relaciones con Casa e Inquilino
-- ✅ **Inquilino** (tbl_inquilino) - Con campo nombreCompleto
-- ✅ **Contrato** (tbl_contrato) - Con float y boolean activo
-- ✅ **Recibo** (tbl_recibo) - Con YearMonth y relaciones
-- ✅ **DetalleRecibo** (tbl_detalle_recibo) - Detalle de facturación
-- ✅ **TarifaServicio** (tbl_tarifa_servicio) - Tarifas con rangos y relación a Casa
-
-**Configuración de compatibilidad:**
-- ✅ Physical Naming Strategy configurada: `PhysicalNamingStrategyStandardImpl`
-- ✅ Hibernate configurado para `update` (sin crear nuevas tablas)
-- ✅ Tipos de datos idénticos a Spring Boot (Integer IDs, float, boolean)
-- ✅ Relaciones exactas mantenidas
-- ✅ Campos específicos preservados (nombreCompleto, activo, etc.)
+**Resultado:** Entidades 100% compatibles con base de datos Spring Boot existente
 
 ### ✅ FASE 3: COMPLETADA (2025-07-23 16:00:00)
 **Migración de Repositorios**
@@ -80,16 +54,75 @@
 
 **Resultado:** Separación perfecta entre entidades (mapeo) y repositorios (consultas)
 
-### 📝 FASE 4: PENDIENTE - CONFIGURACIÓN AVANZADA DE SEGURIDAD
-**Habilitación de Quarkus Security JPA**
-- [ ] **TEMPORAL**: Quarkus Security JPA está deshabilitado para mantener compatibilidad con BD existente
-- [ ] Evaluar agregar campo `roles` a tabla `tblUsuario` 
-- [ ] Implementar migración de datos para roles existentes
-- [ ] Habilitar nuevamente `quarkus-security-jpa` en pom.xml
-- [ ] Restaurar anotaciones `@UserDefinition`, `@Username`, `@Password`, `@Roles`
-- [ ] Configurar roles por defecto para usuarios existentes
+### ✅ FASE 4: COMPLETADA (2025-07-23 16:20:00)
+**Conversión de Spring Services → CDI Services**
+- [x] **PATRÓN CDI**: Migrar anotaciones `@Service` → `@ApplicationScoped` y `@Autowired` → `@Inject`
+- [x] **PRIORIDAD ALTA**: 
+  - [x] `UsuarioService` (sin lógica de autenticación)
+  - [x] Servicios CRUD básicos
+- [x] **PRIORIDAD MEDIA**:
+  - [x] `InquilinoService` 
+  - [x] `CasaService`
+  - [x] `ContratoService`
+- [x] **VALIDACIÓN**: Compilación exitosa y funcionamiento básico
+- [x] **TRANSACCIONES**: Implementar `@Transactional` en métodos de escritura
+- [x] **ESTRUCTURA CREADA**:
+  - [x] `ICRUD<T, ID>` - Interface base genérica
+  - [x] `CRUDImpl<T, ID>` - Implementación base con Panache
+  - [x] `IUsuarioService` + `UsuarioServiceImpl` - Con registrarUsuario() sin encriptación (temporal)
+  - [x] `IInquilinoService` + `InquilinoServiceImpl` - CRUD básico
+  - [x] `ICasaService` + `CasaServiceImpl` - CRUD básico  
+  - [x] `IContratoService` + `ContratoServiceImpl` - CRUD básico
 
-**Nota**: Este paso se realizará después de completar la migración básica para evitar alteraciones en la base de datos durante la coexistencia.
+**Resultado:** Capa de servicios completamente migrada sin dependencias de Spring
+
+**Nota:** Encriptación de contraseñas se implementará en Fase 5 junto con la seguridad
+
+### 📝 FASE 5: PENDIENTE - MIGRACIÓN DE SEGURIDAD JWT BÁSICA
+**Conversión Spring Security → Quarkus Security (SIN Sistema de Roles)**
+- [ ] **JWT CONFIGURATION**: Migrar configuración de tokens JWT usando SmallRye JWT
+- [ ] **AUTHENTICATION SERVICE**: Migrar lógica de login/logout básica
+- [ ] **JWT SERVICE**: Generación y validación de tokens JWT
+- [ ] **TOKEN SERVICE**: Gestión de tokens en base de datos (invalidación)
+- [ ] **SECURITY CONFIG**: Configurar rutas públicas vs privadas en `application.properties`
+- [ ] **ENCRIPTACIÓN**: Implementar BCrypt para contraseñas (pendiente desde Fase 4)
+- [ ] **FILTRO JWT**: Configuración básica de validación de tokens sin roles
+- [ ] **VALIDACIÓN**: Pruebas de autenticación básica (login/logout)
+
+**Enfoque Simplificado:**
+- ✅ **Solo autenticación** - Usuario logueado vs no logueado
+- ✅ **JWT como único mecanismo** - Sin interfaces UserDetails
+- ✅ **Rutas públicas/privadas** - Sin granularidad de roles
+- ✅ **Compatibilidad 100%** - Mismo comportamiento que Spring Boot actual
+
+**Nota**: Sistema mucho más simple, sin roles ni autorización compleja
+
+### 📝 FASE 6: OPCIONAL - MEJORAS DE SEGURIDAD (FUTURO)
+**Posibles mejoras futuras (no necesarias para la migración)**
+- [ ] **ROLES AVANZADOS**: Si en el futuro se requiere sistema de roles granular
+- [ ] **AUTORIZACIÓN COMPLEJA**: @RolesAllowed con múltiples roles
+- [ ] **SEGURIDAD JPA**: Quarkus Security JPA si se agregan campos de roles
+- [ ] **OAUTH2/OIDC**: Integración con proveedores externos
+
+**Nota**: Esta fase es completamente opcional y solo se implementaría si hay requerimientos futuros
+
+### 📝 FASE 7: PENDIENTE - MIGRACIÓN DE CONTROLADORES
+**Conversión Spring MVC → JAX-RS**
+- [ ] **ANOTACIONES**: `@RestController` → `@Path`, `@GetMapping` → `@GET`
+- [ ] **PARÁMETROS**: `@RequestBody` → automático, `@PathVariable` → `@PathParam`
+- [ ] **RESPUESTAS**: `ResponseEntity` → `Response` o retorno directo
+- [ ] **SEGURIDAD BÁSICA**: Rutas públicas vs privadas (sin @RolesAllowed)
+- [ ] **VALIDACIÓN**: Testing de todos los endpoints
+
+### 📝 FASE 8: PENDIENTE - TESTING Y VALIDACIÓN FINAL
+**Pruebas Completas**
+- [ ] Testing unitario de servicios
+- [ ] Testing de integración con base de datos
+- [ ] Pruebas de seguridad y autenticación
+- [ ] Validación de rendimiento
+- [ ] Documentación actualizada
+
+---
 
 ## 🔍 Análisis del Estado Actual
 
@@ -118,165 +151,30 @@
 - Servicios con interfaces y implementaciones
 - Repositorios con Spring Data JPA
 - Configuración de seguridad con filtros JWT
-- DTOs para respuestas API
 
 ---
 
-## 🎯 Plan de Migración por Fases
-
-### **FASE 1: Configuración Base de Quarkus** ✅ **COMPLETADA**
-
-**Estado:** ✅ **COMPLETADA EXITOSAMENTE**
-
-**Tareas completadas:**
-1. ✅ **Actualizado `pom.xml`** - Agregadas todas las extensiones necesarias:
-   ```xml
-   <!-- Seguridad -->
-   <dependency>
-       <groupId>io.quarkus</groupId>
-       <artifactId>quarkus-security</artifactId>
-   </dependency>
-   <dependency>
-       <groupId>io.quarkus</groupId>
-       <artifactId>quarkus-security-jpa</artifactId>
-   </dependency>
-   <dependency>
-       <groupId>io.quarkus</groupId>
-       <artifactId>quarkus-smallrye-jwt</artifactId>
-   </dependency>
-   
-   <!-- Validación -->
-   <dependency>
-       <groupId>io.quarkus</groupId>
-       <artifactId>quarkus-hibernate-validator</artifactId>
-   </dependency>
-   
-   <!-- OpenAPI/Swagger -->
-   <dependency>
-       <groupId>io.quarkus</groupId>
-       <artifactId>quarkus-smallrye-openapi</artifactId>
-   </dependency>
-   ```
-
-2. ✅ **Configurado `application.properties`** - Migrada configuración completa:
-   ```properties
-   # Base de datos (variables de entorno)
-   quarkus.datasource.db-kind=mysql
-   quarkus.datasource.username=${USER_BD:root}
-   quarkus.datasource.password=${PASSWORD_BD:root}
-   quarkus.datasource.jdbc.url=jdbc:mysql://${HOST_BD:localhost}:${PORT_BD:3306}/${NAME_BD:renthome}
-   
-   # Hibernate
-   quarkus.hibernate-orm.database.generation=update
-   quarkus.hibernate-orm.log.sql=false
-   
-   # JWT
-   mp.jwt.verify.publickey.location=${JWT_SECRET_KEY}
-   mp.jwt.verify.issuer=renthome
-   smallrye.jwt.sign.key.location=${JWT_SECRET_KEY}
-   
-   # CORS
-   quarkus.http.cors=true
-   quarkus.http.cors.origins=*
-   ```
-
-3. ✅ **Creado archivo `.env`** - Variables de entorno configuradas
-4. ✅ **Limpieza de archivos** - Eliminados ejemplos no necesarios
-5. ✅ **Validación exitosa** - Proyecto compila y ejecuta correctamente
-6. ✅ **Quarkus en modo desarrollo** - Servidor funcionando en http://localhost:8080
-
-**Resultado:** Base de Quarkus lista para migración de entidades
-
-### **FASE 2: Migración de Entidades** 🔄
-
-**Conversión Spring JPA → Quarkus Hibernate ORM**
-
-**Cambios principales:**
-- `@Entity` se mantiene igual
-- Cambiar `org.springframework` por `jakarta.persistence`
-- Implementar Panache Entity pattern (opcional pero recomendado)
-
-**Entidades a migrar:**
-1. **Usuario** (Prioridad Alta - Base para autenticación)
-2. **Token** (Prioridad Alta - Para JWT)
-3. **Casa** (Prioridad Media)
-4. **UnidadHabitacional** (Prioridad Media)
-5. **Inquilino** (Prioridad Media)
-6. **Contrato** (Prioridad Media)
-7. **Recibo, DetalleRecibo, TarifaServicio** (Prioridad Baja)
-
-**Ejemplo de migración Usuario:**
-```java
-// De Spring Boot UserDetails a Quarkus Security Identity
-@Entity
-@Table(name = "tblUsuario")
-public class Usuario extends PanacheEntity {
-    
-    @Column(nullable = false)
-    public String nombre;
-    
-    @Column(nullable = false)
-    public String email;
-    
-    @Column(nullable = false)
-    public String password;
-    
-    @Column(nullable = false)
-    public boolean activo;
-    
-    @ManyToMany
-    public List<Casa> casas;
-    
-    // Métodos Panache
-    public static Usuario findByEmail(String email) {
-        return find("email", email).firstResult();
-    }
-}
-```
-
-### **FASE 3: Migración de Repositorios** 🔄
-
-**Conversión Spring Data JPA → Panache Repository**
-
-**Estrategias:**
-1. **Opción A:** Usar Panache Entity (Active Record pattern)
-2. **Opción B:** Usar Panache Repository pattern 
-
-**Ejemplo conversión:**
-```java
-// Spring Boot Repository
-public interface UsuarioRepo extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByEmail(String email);
-}
-
-// Quarkus Panache Repository
-@ApplicationScoped
-public class UsuarioRepository implements PanacheRepository<Usuario> {
-    
-    public Optional<Usuario> findByEmail(String email) {
-        return find("email", email).firstResultOptional();
-    }
-    
-    public List<Usuario> findActivUsers() {
-        return list("activo", true);
-    }
-}
-```
+## 🚀 Implementación Detallada por Fases
 
 ### **FASE 4: Migración de Servicios** 🔄
 
-**Conversión Spring Services → CDI Services**
+**Conversión Spring Services → CDI Services (SIN Seguridad)**
 
 **Cambios principales:**
 - `@Service` → `@ApplicationScoped`
 - `@Autowired` → `@Inject`
 - Mantener interfaces (buena práctica)
+- Implementar `@Transactional` para operaciones de escritura
 
-**Servicios a migrar:**
-1. **UsuarioService** y **AuthenticationService** (Prioridad Alta)
-2. **JwtService** y **TokenService** (Prioridad Alta)  
-3. **InquilinoService** (Prioridad Media)
-4. **CRUDService** (Prioridad Media)
+**Servicios de Negocio a migrar (SIN lógica de autenticación):**
+1. **PRIORIDAD ALTA:**
+   - `UsuarioService` (operaciones CRUD básicas, sin login/logout)
+   - Servicios CRUD genéricos
+2. **PRIORIDAD MEDIA:**
+   - `InquilinoService` → Gestión de inquilinos
+   - `CasaService` → Gestión de propiedades  
+   - `ContratoService` → Gestión de contratos
+   - `ReciboService` → Gestión de recibos y facturación
 
 **Ejemplo migración:**
 ```java
@@ -285,6 +183,10 @@ public class UsuarioRepository implements PanacheRepository<Usuario> {
 public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private UsuarioRepo usuarioRepo;
+    
+    public Usuario save(Usuario usuario) {
+        return usuarioRepo.save(usuario);
+    }
 }
 
 // Quarkus Service
@@ -292,53 +194,108 @@ public class UsuarioServiceImpl implements IUsuarioService {
 public class UsuarioServiceImpl implements IUsuarioService {
     @Inject
     UsuarioRepository usuarioRepository;
+    
+    @Transactional
+    public Usuario save(Usuario usuario) {
+        usuarioRepository.persist(usuario);
+        return usuario;
+    }
 }
 ```
 
-### **FASE 5: Migración de Seguridad** 🔒
+### **FASE 5: Migración de Seguridad JWT Básica** 🔒
 
-**Conversión Spring Security → Quarkus Security**
+**Conversión Spring Security → Quarkus Security (SIN Roles)**
 
-**Componentes críticos:**
-1. **JWT Configuration**
-2. **Authentication Filter** 
-3. **User Identity Provider**
-4. **Security Config**
+**Servicios de Seguridad a migrar:**
+1. **AuthenticationService** → Lógica de login/logout básica
+2. **JwtService** → Generación y validación de tokens
+3. **TokenService** → Gestión de tokens en base de datos
 
-**Implementación Quarkus:**
+**Componentes Spring Security → Quarkus Security:**
+
+| **Spring Security** | **Quarkus Security** | **Descripción** |
+|---------------------|---------------------|-----------------|
+| `@EnableWebSecurity` | `application.properties` | Configuración de rutas |
+| `JwtRequestFilter` | SmallRye JWT automático | Validación JWT |
+| `UserDetailsService` | Eliminado | No necesario sin roles |
+| `SecurityContextHolder` | `SecurityIdentity` | Contexto de usuario |
+| Rutas permitAll/authenticated | `quarkus.http.auth.permission.*` | Control de acceso |
+
+**Implementación Quarkus Simplificada:**
 ```java
-// JWT Token Generator
+// 1. AuthenticationService - Solo login/logout
 @ApplicationScoped
-public class TokenService {
+public class AuthenticationServiceImpl implements IAuthenticationService {
+    @Inject
+    UsuarioRepository usuarioRepository;
     
-    @ConfigProperty(name = "mp.jwt.sign.key.location")
-    String privateKeyLocation;
+    @Inject
+    JwtService jwtService;
+    
+    public LoginResponse login(String email, String password) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (usuario.activo && BCrypt.checkpw(password, usuario.password)) {
+                String token = jwtService.generateToken(usuario);
+                return new LoginResponse(token, usuario);
+            }
+        }
+        throw new AuthenticationException("Credenciales inválidas");
+    }
+}
+
+// 2. JWT Service - Sin roles, solo autenticación
+@ApplicationScoped
+public class JwtServiceImpl implements IJwtService {
+    
+    @ConfigProperty(name = "smallrye.jwt.sign.key")
+    String secretKey;
     
     public String generateToken(Usuario usuario) {
         return Jwt.issuer("renthome")
-                .upn(usuario.email)
-                .groups(Set.of("user"))
+                .upn(usuario.email)                    // Email como principal
+                .groups(Set.of("authenticated"))       // Un solo grupo básico
                 .expiresAt(Instant.now().plusSeconds(43200))
                 .sign();
     }
-}
-
-// Security Identity Augmentor
-@ApplicationScoped
-public class RoleAugmentor implements SecurityIdentityAugmentor {
     
-    @Override
-    public Uni<SecurityIdentity> augment(SecurityIdentity identity, 
-                                       AuthenticationRequestContext context) {
-        // Agregar roles desde BD
-        return Uni.createFrom().item(identity);
+    public boolean validateToken(String token) {
+        try {
+            // SmallRye JWT lo valida automáticamente
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
+
+// 3. Configuración de Seguridad en application.properties
+# Rutas públicas
+quarkus.http.auth.permission.permit1.paths=/v1/auth/login,/v1/usuarios
+quarkus.http.auth.permission.permit1.policy=permit
+
+# Rutas privadas - solo requieren JWT válido
+quarkus.http.auth.permission.deny1.paths=/*
+quarkus.http.auth.permission.deny1.policy=authenticated
+
+# JWT Configuration
+smallrye.jwt.sign.key=${JWT_SECRET_KEY}
+mp.jwt.verify.publickey=${JWT_SECRET_KEY}
+mp.jwt.verify.issuer=renthome
 ```
 
-### **FASE 6: Migración de Controladores** 🌐
+**Ventajas del enfoque simplificado:**
+- ✅ **Sin complejidad de roles** - Solo usuario autenticado vs anónimo
+- ✅ **Migración directa** - Mismo comportamiento que Spring Boot actual
+- ✅ **SmallRye JWT automático** - Sin necesidad de filtros personalizados
+- ✅ **Configuración declarativa** - Todo en application.properties
+```
 
-**Conversión Spring MVC → JAX-RS**
+### **FASE 7: Migración de Controladores** 🌐
+
+**Conversión Spring MVC → JAX-RS (Sin Roles)**
 
 **Cambios principales:**
 - `@RestController` → `@Path`
@@ -349,7 +306,7 @@ public class RoleAugmentor implements SecurityIdentityAugmentor {
 - `@PathVariable` → `@PathParam`
 - `ResponseEntity` → `Response` o retorno directo
 
-**Ejemplo migración:**
+**Ejemplo migración sin roles:**
 ```java
 // Spring Boot Controller
 @RestController
@@ -363,40 +320,38 @@ public class UsuarioController {
     }
 }
 
-// Quarkus JAX-RS Resource
+// Quarkus JAX-RS Resource - Sin @RolesAllowed
 @Path("/v1/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UsuarioResource {
     
+    // Ruta pública (configurada en application.properties)
     @POST
-    @RolesAllowed("admin")
     public Response registrar(Usuario usuario) {
         // lógica
         return Response.status(201).entity(response).build();
     }
+    
+    // Ruta privada (requiere JWT automáticamente)
+    @GET
+    public List<Usuario> listar() {
+        // Solo usuarios autenticados pueden acceder
+        return usuarios;
+    }
 }
 ```
 
-### **FASE 7: Migración de DTOs y Utilitarios** 📦
+**Control de acceso por configuración:**
+```properties
+# En application.properties - No en anotaciones
+quarkus.http.auth.permission.public.paths=/v1/auth/login,/v1/usuarios
+quarkus.http.auth.permission.public.policy=permit
 
-**Mantener estructura existente:**
-- `APIResponseDTO` - Mantener para consistencia
-- DTOs de request/response
-- Utilidades y helpers
-
-### **FASE 8: Configuración y Testing** 🧪
-
-**Migrar configuración:**
-1. **Variables de entorno** (.env)
-2. **CORS configuration**
-3. **Logging configuration** 
-4. **Database initialization** (import.sql)
-
-**Testing:**
-- `@QuarkusTest` en lugar de `@SpringBootTest`
-- RestAssured para tests de integración
-- Testcontainers para tests con BD
+quarkus.http.auth.permission.private.paths=/*
+quarkus.http.auth.permission.private.policy=authenticated
+```
+```
 
 ---
 
@@ -404,16 +359,16 @@ public class UsuarioResource {
 
 | Fase | Duración | Dependencias | Estado |
 |------|----------|--------------|---------|
-| **Fase 1** | ✅ Completada | - | ✅ **DONE** |
-| **Fase 2** | 2-3 días | Fase 1 | 🔄 **EN PROGRESO** |
-| **Fase 3** | 1-2 días | Fase 2 | ⏳ Pendiente |
-| **Fase 4** | 2-3 días | Fase 3 | ⏳ Pendiente |
-| **Fase 5** | 3-4 días | Fases 2,3,4 | ⏳ Pendiente |
-| **Fase 6** | 2-3 días | Fases 4,5 | ⏳ Pendiente |
-| **Fase 7** | 1 día | Fase 6 | ⏳ Pendiente |
-| **Fase 8** | 2-3 días | Todas | ⏳ Pendiente |
+| **Fase 1** | ✅ Completada | - | ✅ **COMPLETADA** |
+| **Fase 2** | ✅ Completada | Fase 1 | ✅ **COMPLETADA** |
+| **Fase 3** | ✅ Completada | Fase 2 | ✅ **COMPLETADA** |
+| **Fase 4** | 1-2 días | Fase 3 | ⏳ **PRÓXIMA** |
+| **Fase 5** | 1-2 días | Fase 4 | ⏳ Pendiente |
+| **Fase 6** | Opcional | - | ⏳ Futuro |
+| **Fase 7** | 2-3 días | Fase 5 | ⏳ Pendiente |
+| **Fase 8** | 1 día | Fase 7 | ⏳ Pendiente |
 
-**Total estimado: 2-3 semanas**
+**Total estimado: 1-2 semanas restantes**
 
 ---
 
@@ -425,67 +380,37 @@ public class UsuarioResource {
 |---------|-------------|---------|
 | **Inyección** | `@Autowired` | `@Inject` (CDI) |
 | **REST** | Spring MVC | JAX-RS |
-| **ORM** | Spring Data JPA | Hibernate ORM + Panache |
-| **Seguridad** | Spring Security | MP-JWT + RBAC |
-| **Configuración** | `@Value` | `@ConfigProperty` |
-| **Transacciones** | `@Transactional` | `@Transactional` (igual) |
+| **Servicios** | `@Service` | `@ApplicationScoped` |
+| **Transacciones** | `@Transactional` | `@Transactional` |
+| **Seguridad** | Spring Security | SmallRye JWT + Security |
+| **Configuración** | `application.properties` | `application.properties` |
 
-### **Beneficios esperados:**
-- ⚡ **Startup time:** De ~3-5s a ~0.3-1s
-- 🔋 **Memory usage:** Reducción del 60-70%
-- 🚀 **Native compilation:** Posibilidad de GraalVM native
-- 🔧 **Dev experience:** Hot reload mejorado
-- ☁️ **Cloud native:** Optimizado para containers
+### **Compatibilidad con Base de Datos:**
+- ✅ **Esquema preservado**: No se modifican tablas existentes
+- ✅ **IDs compatibles**: `Integer` en lugar de `Long`
+- ✅ **Naming strategy**: `PhysicalNamingStrategyStandardImpl`
+- ✅ **Relaciones**: Todas las `@JoinColumn` mantenidas
 
-### **Riesgos y mitigaciones:**
-- **Ecosistema más limitado:** Verificar disponibilidad de extensiones
-- **Curva de aprendizaje:** Capacitación en CDI/JAX-RS
-- **Debugging:** Logs detallados durante migración
-- **Testing exhaustivo:** Tests de regresión completos
-
----
-
-## 🚀 Próximos Pasos
-
-1. ✅ **Completar Fase 1:** ~~Actualizar dependencias en `pom.xml`~~ **COMPLETADO**
-2. 🎯 **Iniciar Fase 2:** Comenzar con entidad `Usuario` **← SIGUIENTE**
-3. **Validar cada fase:** Tests unitarios y de integración
-4. **Documentar cambios:** Mantener registro de modificaciones
-
-### **Estado actual del proyecto:**
-- 🟢 **Quarkus Base:** Configurado y funcionando
-- 🟢 **Dependencias:** Todas las extensiones instaladas
-- 🟢 **Configuración:** Variables y propiedades OK
-- 🟢 **Compilación:** Sin errores
-- 🟢 **Servidor:** Ejecutándose en modo desarrollo
-- 🔄 **Base de datos:** Configurada (requiere creación de BD)
+### **Estrategias de Testing:**
+- Usar `@QuarkusTest` en lugar de `@SpringBootTest`
+- Testcontainers para testing con base de datos
+- RestAssured para testing de APIs
+- Mocking con CDI y `@Mock`
 
 ---
 
-## 📚 Referencias y Recursos
+## 🎯 Próximos Pasos
 
-### **Documentación oficial:**
-- [Quarkus Migration Guide](https://quarkus.io/guides/migration-guide)
-- [Quarkus Security Guide](https://quarkus.io/guides/security)
-- [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache)
-
-### **Guías específicas:**
-- [Spring Boot to Quarkus Migration](https://quarkus.io/guides/spring-boot-properties)
-- [JAX-RS vs Spring MVC](https://quarkus.io/guides/rest-json)
-- [CDI vs Spring DI](https://quarkus.io/guides/cdi)
-
-### **Herramientas útiles:**
-- [Quarkus CLI](https://quarkus.io/guides/cli-tooling)
-- [Quarkus Dev Services](https://quarkus.io/guides/dev-services)
-- [Quarkus Testing](https://quarkus.io/guides/getting-started-testing)
+1. **Iniciar Fase 4**: Migración de servicios básicos (sin seguridad)
+2. **Validar funcionamiento**: Compilación y testing básico
+3. **Continuar Fase 5**: Migración completa de seguridad
+4. **Fase 7**: Migración de controladores con seguridad habilitada
+5. **Fase 8**: Testing final y documentación
 
 ---
 
-**Autor:** GitHub Copilot  
-**Fecha:** Julio 23, 2025  
-**Versión:** 1.1 - Fase 1 Completada  
-**Proyecto:** RentHome Backend Migration
-
-### **Log de Cambios:**
-- **v1.1 (23/07/2025):** ✅ Fase 1 completada exitosamente
-- **v1.0 (23/07/2025):** Plan inicial creado
+**📝 Notas importantes:**
+- Mantener coexistencia con Spring Boot durante desarrollo
+- No modificar base de datos existente
+- Validar cada fase antes de continuar
+- Documentar cambios y decisiones técnicas
