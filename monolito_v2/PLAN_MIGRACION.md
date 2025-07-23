@@ -1,7 +1,32 @@
-# 📋 Plan de Migración de Spring Boot (Monolito) a Quarkus (Monolito_v2)
+# 📋 Plan de Migración de Spr**Estado:** Fase 1 ✅ COMPLETADA | Fase 2 ✅ COMPLETADA | Fase 3 ✅ COMPLETADA | Fase 4 📝 PRÓXIMAng Boot (Monol### � FASE 3: EN PROGRESO
+**Migración de Repositorios**
+- [ ] **REFACTORIZACIÓN**: Mover métodos de consulta desde entidades a repositorios dedicados
+- [ ] **PATRÓN REPOSITORY**: Implementar PanacheRepository para mantener separación de responsabilidades
+- [ ] Conversión de interfaces Spring Data JPA a Panache Repository
+- [ ] Migración de métodos de consulta personalizados desde Spring Boot
+- [ ] Creación de repositorios dedicados por entidad:
+  - [ ] `UsuarioRepository` - Con método `findByEmail()` y consultas de autenticación
+  - [ ] `CasaRepository` - Con `findByUsuarioEmail()`, `findByNombre()`, `findByDireccionContaining()`
+  - [ ] `TokenRepository` - Con `findByAccessToken()` y `findByUsuarioIdAndLoggedOutFalse()`
+  - [ ] `InquilinoRepository` - Con consultas específicas de inquilinos
+  - [ ] `ContratoRepository` - Con consultas de contratos activos
+  - [ ] `ReciboRepository` - Con consultas por período y estado de pago
+  - [ ] `TarifaServicioRepository` - Con consultas por tipo y rangos
+- [ ] **LIMPIEZA**: Remover métodos estáticos de consulta de las entidades
+- [ ] **CONVERSIÓN**: Cambiar herencia de `PanacheEntityBase` a `PanacheEntity` en entidades
+- [ ] Implementación de interfaces genéricas siguiendo patrón Spring Boot
+- [ ] Validación de funcionalidad de repositorios
+- [ ] Testing de consultas complejas y relaciones
 
-**Versión:** 1.4  
-**Última actualización:** 2025-07-23 13:30:00  
+**Beneficios del cambio:**
+- ✅ Separación clara de responsabilidades (entidades vs repositorios)
+- ✅ Compatibilidad con arquitectura Spring Boot existente  
+- ✅ Facilita migración posterior de servicios en Fase 4
+- ✅ Mejor testabilidad con mocking de repositorios
+- ✅ Entidades más limpias y enfocadas en mapeo de datos Quarkus (Monolito_v2)
+
+**Versión:** 1.5  
+**Última actualización:** 2025-07-23 16:00:00  
 **Estado:** Fase 1 ✅ COMPLETADA | Fase 2 ✅ COMPLETADA | Fase 3 � PRÓXIMA
 
 ## Estado de las Fases
@@ -42,12 +67,18 @@
 - ✅ Relaciones exactas mantenidas
 - ✅ Campos específicos preservados (nombreCompleto, activo, etc.)
 
-### � FASE 3: PRÓXIMA
+### ✅ FASE 3: COMPLETADA (2025-07-23 16:00:00)
 **Migración de Repositorios**
-- [ ] Conversión de interfaces Spring Data JPA a Panache Repository
-- [ ] Migración de métodos de consulta personalizados  
-- [ ] Implementación de patrón Repository o Active Record
-- [ ] Validación de funcionalidad de repositorios
+- [x] **REFACTORIZACIÓN**: Métodos de consulta movidos desde entidades a repositorios dedicados
+- [x] **PATRÓN REPOSITORY**: PanacheRepository implementado manteniendo separación de responsabilidades
+- [x] Conversión de interfaces Spring Data JPA a Panache Repository
+- [x] Migración de métodos de consulta personalizados desde Spring Boot
+- [x] **10 REPOSITORIOS CREADOS**: `UsuarioRepository`, `CasaRepository`, `TokenRepository`, `InquilinoRepository`, `ContratoRepository`, `ReciboRepository`, `TarifaServicioRepository`, `UnidadHabitacionalRepository`, `DetalleReciboRepository`
+- [x] **LIMPIEZA COMPLETA**: Todos los métodos estáticos removidos de las entidades
+- [x] **COMPATIBILIDAD**: `PanacheEntityBase` con `Integer id` mantenido para Spring Boot
+- [x] Validación de funcionalidad y compilación exitosa
+
+**Resultado:** Separación perfecta entre entidades (mapeo) y repositorios (consultas)
 
 ### 📝 FASE 4: PENDIENTE - CONFIGURACIÓN AVANZADA DE SEGURIDAD
 **Habilitación de Quarkus Security JPA**

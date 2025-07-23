@@ -38,19 +38,6 @@ public class Recibo extends PanacheEntityBase {
     @OneToMany(mappedBy = "recibo", cascade = CascadeType.ALL)
     public List<DetalleRecibo> detalle;
 
-    // Métodos de negocio Panache
-    public static List<Recibo> findByContrato(Contrato contrato) {
-        return list("contrato", contrato);
-    }
-    
-    public static List<Recibo> findByPeriodo(YearMonth periodo) {
-        return list("periodo", periodo);
-    }
-    
-    public static List<Recibo> findPendientesPago() {
-        return list("pagado", false);
-    }
-
     // Getters y Setters para compatibilidad
     public Integer getId() {
         return id;

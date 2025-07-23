@@ -26,15 +26,7 @@ public class DetalleRecibo extends PanacheEntityBase {
     @ManyToOne
     public Recibo recibo;
 
-    // Métodos de negocio Panache
-    public static java.util.List<DetalleRecibo> findByRecibo(Recibo recibo) {
-        return list("recibo", recibo);
-    }
     
-    public static java.util.List<DetalleRecibo> findByDescripcion(String descripcion) {
-        return list("descripcion", descripcion);
-    }
-
     // Getters y Setters para compatibilidad
     public Integer getId() {
         return id;

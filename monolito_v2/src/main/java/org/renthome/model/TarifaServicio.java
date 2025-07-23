@@ -30,19 +30,6 @@ public class TarifaServicio extends PanacheEntityBase {
     @ManyToOne
     public Casa casa;
 
-    // Métodos de consulta usando Panache
-    public static List<TarifaServicio> findByTipoServicio(String tipoServicio) {
-        return list("tipoServicio", tipoServicio);
-    }
-
-    public static List<TarifaServicio> findByCasa(Casa casa) {
-        return list("casa", casa);
-    }
-
-    public static List<TarifaServicio> findByRango(float valor) {
-        return list("rangoInicio <= ?1 AND rangoFin >= ?1", valor);
-    }
-
     // Getters y Setters para compatibilidad
     public Integer getId() {
         return id;

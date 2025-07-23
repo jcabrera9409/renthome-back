@@ -34,26 +34,6 @@ public class Contrato extends PanacheEntityBase {
     @ManyToOne
     public UnidadHabitacional unidad;
 
-    // Métodos de consulta usando Panache
-    public static List<Contrato> findContratosActivos() {
-        return list("activo", true);
-    }
-    
-    public static List<Contrato> findByInquilino(Inquilino inquilino) {
-        return list("inquilino", inquilino);
-    }
-    
-    public static List<Contrato> findByUnidad(UnidadHabitacional unidad) {
-        return list("unidad", unidad);
-    }
-    
-    public static Contrato findActivoByUnidad(UnidadHabitacional unidad) {
-        return find("unidad = ?1 and activo = true", unidad).firstResult();
-    }
-    
-    public static List<Contrato> findByPeriodo(LocalDate fechaInicio, LocalDate fechaFin) {
-        return list("fechaInicio >= ?1 and fechaInicio <= ?2", fechaInicio, fechaFin);
-    }
     
     // Métodos de negocio
     public void finalizar() {

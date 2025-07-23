@@ -24,19 +24,6 @@ public class Casa extends PanacheEntityBase {
     @ManyToMany(mappedBy = "casas", fetch = FetchType.LAZY)
     public List<Usuario> usuarios;
 
-    // Métodos de consulta usando Panache
-    public static List<Casa> findByUsuarioEmail(String email) {
-        return list("SELECT DISTINCT c FROM Casa c JOIN c.usuarios u WHERE u.email = ?1", email);
-    }
-    
-    public static Casa findByNombre(String nombre) {
-        return find("nombre", nombre).firstResult();
-    }
-    
-    public static List<Casa> findByDireccionContaining(String direccion) {
-        return list("direccion like ?1", "%" + direccion + "%");
-    }
-    
     @Override
     public String toString() {
         return "Casa{" +

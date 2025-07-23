@@ -24,22 +24,6 @@ public class Token extends PanacheEntityBase {
     @ManyToOne(optional = false)
     public Usuario usuario;
 
-    // Métodos de consulta usando Panache
-    public static Token findByAccessToken(String accessToken) {
-        return find("accessToken", accessToken).firstResult();
-    }
-    
-    public static Token findByRefreshToken(String refreshToken) {
-        return find("refreshToken", refreshToken).firstResult();
-    }
-    
-    public static List<Token> findByUsuario(Usuario usuario) {
-        return list("usuario", usuario);
-    }
-    
-    public static void invalidateAllUserTokens(Usuario usuario) {
-        update("loggedOut = true where usuario = ?1", usuario);
-    }
     
     // Métodos de negocio
     public boolean isValid() {

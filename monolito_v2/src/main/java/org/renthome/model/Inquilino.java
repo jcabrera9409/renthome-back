@@ -27,22 +27,6 @@ public class Inquilino extends PanacheEntityBase {
     @OneToMany(mappedBy = "inquilino", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Contrato> contratos;
 
-    // Métodos de consulta usando Panache
-    public static Inquilino findByDocumentoIdentidad(String documentoIdentidad) {
-        return find("documentoIdentidad", documentoIdentidad).firstResult();
-    }
-    
-    public static Inquilino findByCorreo(String correo) {
-        return find("correo", correo).firstResult();
-    }
-    
-    public static List<Inquilino> findByNombreCompleto(String nombreCompleto) {
-        return list("nombreCompleto", nombreCompleto);
-    }
-    
-    public static List<Inquilino> findByTelefono(String telefono) {
-        return list("telefono", telefono);
-    }
     
     // Métodos de negocio
     public boolean tieneContratosActivos() {

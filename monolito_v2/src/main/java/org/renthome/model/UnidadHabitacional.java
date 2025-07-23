@@ -33,30 +33,6 @@ public class UnidadHabitacional extends PanacheEntityBase {
     @OneToMany(mappedBy = "unidad", fetch = FetchType.LAZY)
     public List<Contrato> contratos;
 
-    // Métodos de consulta usando Panache
-    public static List<UnidadHabitacional> findByCasa(Casa casa) {
-        return list("casa", casa);
-    }
-    
-    public static List<UnidadHabitacional> findByEstado(String estado) {
-        return list("estado", estado);
-    }
-    
-    public static List<UnidadHabitacional> findDisponibles() {
-        return list("estado", "DISPONIBLE");
-    }
-    
-    public static List<UnidadHabitacional> findByCasaAndEstado(Casa casa, String estado) {
-        return list("casa = ?1 and estado = ?2", casa, estado);
-    }
-    
-    public static List<UnidadHabitacional> findByTipoUnidad(String tipoUnidad) {
-        return list("tipoUnidad", tipoUnidad);
-    }
-    
-    public static UnidadHabitacional findByNombreAndCasa(String nombre, Casa casa) {
-        return find("nombre = ?1 and casa = ?2", nombre, casa).firstResult();
-    }
     
     // Métodos de negocio
     public boolean isDisponible() {

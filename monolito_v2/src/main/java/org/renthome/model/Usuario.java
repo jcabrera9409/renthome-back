@@ -35,18 +35,6 @@ public class Usuario extends PanacheEntityBase {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Token> tokens;
 
-    // Métodos de consulta usando Panache
-    public static Usuario findByEmail(String email) {
-        return find("email", email).firstResult();
-    }
-    
-    public static List<Usuario> findActiveUsers() {
-        return list("activo", true);
-    }
-    
-    public static Usuario findByEmailAndActive(String email, boolean activo) {
-        return find("email = ?1 and activo = ?2", email, activo).firstResult();
-    }
     
     @Override
     public String toString() {
