@@ -59,10 +59,13 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-security</artifactId>
         </dependency>
+        <!-- Temporalmente deshabilitado - Ver PLAN_MIGRACION.md Fase 4 -->
+        <!--
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-security-jpa</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-jwt</artifactId>
