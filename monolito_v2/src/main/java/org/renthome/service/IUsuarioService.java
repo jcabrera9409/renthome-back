@@ -28,4 +28,9 @@ public interface IUsuarioService extends ICRUD<Usuario, Integer> {
      * Verificar si existe usuario por email
      */
     boolean existeEmail(String email);
+    
+    /**
+     * Cambiar contraseña de usuario
+     */
+    boolean cambiarPassword(Integer usuarioId, String passwordActual, String passwordNueva);
 }

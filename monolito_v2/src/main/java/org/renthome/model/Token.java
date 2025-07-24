@@ -12,10 +12,10 @@ public class Token extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
     
-    @Column(nullable = false, unique = true, name = "access_token")
+    @Column(nullable = false, unique = true, name = "access_token", length = 2048)
     public String accessToken;
     
-    @Column(nullable = false, unique = true, name = "refresh_token")
+    @Column(nullable = false, unique = true, name = "refresh_token", length = 2048)
     public String refreshToken;
     
     @Column(nullable = false, name = "logged_out")

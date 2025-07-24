@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Implementación del servicio de Usuario para Quarkus
@@ -92,5 +93,32 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
     @Transactional
     public Usuario modificar(Usuario usuario) {
         return modificarUsuario(usuario);
+    }
+
+    @Override
+    @Transactional
+    public boolean cambiarPassword(Integer usuarioId, String passwordActual, String passwordNueva) {
+        logger.info("Intentando cambiar contraseña para usuario id: {}", usuarioId);
+        
+        Optional<Usuario> usuarioOpt = usuarioRepository.find("id", usuarioId).firstResultOptional();
+        if (!usuarioOpt.isPresent()) {
+            logger.warn("Usuario con id {} no encontrado", usuarioId);
+            return false;
+        }
+        
+        Usuario usuario = usuarioOpt.get();
+        
+        // Verificar la contraseña actual usando BCrypt
+        if (!BCrypt.checkpw(passwordActual, usuario.password)) {
+            logger.warn("Contraseña actual incorrecta para usuario id: {}", usuarioId);
+            return false;
+        }
+        
+        // Encriptar la nueva contraseña con BCrypt
+        usuario.password = BCrypt.hashpw(passwordNueva, BCrypt.gensalt());
+        usuarioRepository.persist(usuario);
+        
+        logger.info("Contraseña cambiada exitosamente para usuario id: {}", usuarioId);
+        return true;
     }
 }
