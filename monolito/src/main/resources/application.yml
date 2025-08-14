@@ -1,0 +1,17 @@
+spring:
+  application.name: renthome-back
+  config.import: optional:file:.env[.properties]
+  jpa:
+    database: mysql
+    hibernate.ddl-auto: update
+    show-sql: false
+  datasource:
+    url: ${DATASOURCE_BD:jdbc:mysql://localhost:3306/zekretdb}
+    username: ${DATASOURCE_USER:root}
+    password: ${DATASOURCE_PASSWORD:root}
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    access-token-expiration: 43200000
+    refresh-token-expiration: 86400000

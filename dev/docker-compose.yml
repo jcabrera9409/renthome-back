@@ -1,0 +1,12 @@
+services:
+  bd:
+    image: mysql:8.0
+    restart: always
+    container_name: bd
+    environment:
+      MYSQL_DATABASE:             zekretdb
+      MYSQL_ROOT_PASSWORD:        root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
