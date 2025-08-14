@@ -1,0 +1,336 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+           CSS CUSTOM PROPERTIES (VARIABLES)
+           ============================================ */
+:root {
+    /* Primary Colors (Indigo) */
+    --color-primary-50: #eef2ff;
+    --color-primary-100: #e0e7ff;
+    --color-primary-200: #c7d2fe;
+    --color-primary-300: #a5b4fc;
+    --color-primary-400: #818cf8;
+    --color-primary-500: #6366f1;
+    --color-primary-600: #4f46e5;
+    --color-primary-700: #4338ca;
+    --color-primary-800: #3730a3;
+    --color-primary-900: #312e81;
+
+    /* Secondary Colors (Purple) */
+    --color-secondary-400: #a78bfa;
+    --color-secondary-600: #7c3aed;
+    --color-secondary-800: #5b21b6;
+
+    /* Gray Scale */
+    --color-gray-50: #f9fafb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-200: #e5e7eb;
+    --color-gray-300: #d1d5db;
+    --color-gray-400: #9ca3af;
+    --color-gray-500: #6b7280;
+    --color-gray-600: #4b5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1f2937;
+    --color-gray-900: #111827;
+
+    /* Status Colors */
+    --color-success-50: #ecfdf5;
+    --color-success-100: #d1fae5;
+    --color-success-500: #10b981;
+    --color-success-600: #059669;
+    --color-success-700: #047857;
+    --color-success-800: #065f46;
+
+    --color-error-50: #fef2f2;
+    --color-error-100: #fee2e2;
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+    --color-error-700: #b91c1c;
+    --color-error-800: #991b1b;
+
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+    --color-warning-800: #92400e;
+
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+    --color-info-800: #1e40af;
+
+    /* Utility Colors */
+    --color-blue-400: #60a5fa;
+    --color-blue-500: #3b82f6;
+    --color-yellow-500: #eab308;
+    --color-yellow-600: #ca8a04;
+    --color-orange-100: #fed7aa;
+    --color-orange-600: #ea580c;
+    --color-purple-100: #f3e8ff;
+    --color-purple-600: #9333ea;
+
+    /* White & Transparent */
+    --color-white: #ffffff;
+    --color-transparent: transparent;
+
+    /* Background Gradients */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    /* Glass Effect */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-backdrop: blur(10px);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-dropdown: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    /* Focus Ring */
+    --focus-ring-primary: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    --focus-ring-primary-strong: 0 0 0 3px rgba(99, 102, 241, 0.2);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+           UTILITY CLASSES
+           ============================================ */
+.hidden {
+    display: none !important;
+}
+
+/* ============================================
+           ANIMATIONS
+           ============================================ */
+.slide-in {
+    animation: slideIn var(--transition-normal) ease-out;
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+           BACKGROUND EFFECTS
+           ============================================ */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+}
+
+.gradient-bg {
+    background: var(--gradient-primary);
+}
+
+/* ============================================
+           CUSTOM FORM COMPONENTS
+           ============================================ */
+
+/* Custom Select */
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select select {
+    appearance: none;
+    background: var(--color-white);
+    border: 2px solid var(--color-gray-200);
+    border-radius: 0.75rem;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-gray-700);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 200px;
+}
+
+.custom-select select:hover,
+.custom-select select:focus {
+    border-color: var(--color-primary-600);
+    outline: none;
+}
+
+.custom-select select:hover {
+    box-shadow: var(--focus-ring-primary);
+}
+
+.custom-select select:focus {
+    box-shadow: var(--focus-ring-primary-strong);
+}
+
+.custom-select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid var(--color-transparent);
+    border-right: 5px solid var(--color-transparent);
+    border-top: 6px solid var(--color-gray-500);
+    pointer-events: none;
+    transition: border-top-color var(--transition-fast);
+}
+
+.custom-select:hover::after {
+    border-top-color: var(--color-primary-600);
+}
+
+/* Custom Dropdown */
+.custom-dropdown {
+    position: relative;
+}
+
+.custom-dropdown-selected {
+    background: var(--color-white);
+    border: 2px solid var(--color-gray-200);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.custom-dropdown-selected:hover {
+    border-color: var(--color-primary-600);
+    box-shadow: var(--focus-ring-primary);
+}
+
+.custom-dropdown-options {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-dropdown);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-option:hover {
+    background-color: var(--color-primary-50);
+}
+
+.dropdown-option.selected {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-600);
+}
+
+/* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+@media (max-width: 640px) {
+    .custom-dropdown-options {
+        position: fixed;
+        left: 1rem;
+        right: 1rem;
+        top: auto;
+        max-height: 250px;
+    }
+}
+
+/* ============================================
+           SIDEBAR STYLES
+           ============================================ */
+#sidebar {
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+/* Hamburger button styles */
+#sidebarToggle {
+    z-index: 60;
+    display: flex !important;
+}
+
+/* Desktop layout */
+@media (min-width: 1024px) {
+    #sidebar {
+        position: fixed !important;
+        height: calc(100vh - 4rem) !important;
+        /* Altura completa menos el header */
+        top: 4rem !important;
+        /* Debajo del header */
+        padding-top: 0 !important;
+    }
+
+    #sidebarOverlay {
+        display: none !important;
+    }
+
+    #mainContent {
+        margin-left: 0;
+        /* Por defecto sin margen, se ajusta con JS */
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    /* Cuando el sidebar está colapsado */
+    #sidebar.-translate-x-full+#sidebarOverlay+#mainContent {
+        margin-left: 0;
+    }
+
+    .main-layout-desktop {
+        display: flex;
+        min-height: calc(100vh - 4rem);
+        /* Altura completa menos el header */
+    }
+
+    .sidebar-desktop {
+        width: 16rem;
+        flex-shrink: 0;
+    }
+
+    .content-desktop {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* Mobile sidebar animations */
+@media (max-width: 1023px) {
+    #sidebar {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        top: 0;
+        height: 100vh;
+    }
+
+    .main-layout-mobile {
+        display: block;
+    }
+}
