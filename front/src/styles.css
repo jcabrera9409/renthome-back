@@ -264,6 +264,10 @@
         top: auto;
         max-height: 250px;
     }
+
+    .title-admin {
+        display: none;
+    }
 }
 
 /* ============================================
@@ -303,6 +307,10 @@
     /* Cuando el sidebar está colapsado */
     #sidebar.-translate-x-full+#sidebarOverlay+#mainContent {
         margin-left: 0;
+    }
+
+    #mainContent.open {
+        margin-left: 16rem;
     }
 
     .main-layout-desktop {

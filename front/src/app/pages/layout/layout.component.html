@@ -1,0 +1,101 @@
+<div id="dashboardScreen" class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <!-- Hamburger Menu Button -->
+                    <button id="sidebarToggle" (click)="toggleSidebar()"
+                        class="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors flex items-center">
+                        <i-lucide [img]="menuIcon" class="w-6 h-6" [hidden]="this.isMenuIconVisible"></i-lucide>
+                        <i-lucide [img]="xIcon" class="w-6 h-6" [hidden]="this.isXIconVisible"></i-lucide>
+                    </button>
+
+                    <i-lucide [img]="buildingIcon" class="title-admin w-8 h-8 text-indigo-600"></i-lucide>
+                    <h1 class="title-admin text-xl font-semibold text-gray-900">Gestión de Alquileres</h1>
+                </div>
+
+                <!-- Property Selector -->
+                <div class="flex items-center space-x-4">
+                    <div class="custom-select">
+                        <select id="propertySelector">
+                            <option value="casa1">Casa Vista Hermosa</option>
+                            <option value="edificio1">Edificio Central Plaza</option>
+                            <option value="casa2">Casa Los Pinos</option>
+                        </select>
+                    </div>
+
+                    <button id="logoutBtn" class="text-gray-500 hover:text-gray-700">
+                        <i-lucide [img]="logoutIcon" class="w-5 h-5"></i-lucide>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout-desktop main-layout-mobile">
+        <aside id="sidebar"
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r transform transition-transform duration-300 ease-in-out {{getSidebarClass}}">
+            <div class="pt-16 lg:pt-0 h-full">
+                <nav class="p-4 h-full">
+                    <ul class="space-y-2">
+                        <li>
+                            <button
+                                class="nav-tab active w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors bg-indigo-100 text-indigo-700"
+                                data-tab="dashboard">
+                                <i-lucide [img]="layoutDashboardIcon" class="w-5 h-5"></i-lucide>
+                                <span>Dashboard</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                                data-tab="tarifas">
+                                <i-lucide [img]="creditCardIcon" class="w-5 h-5"></i-lucide>
+                                <span>Tarifas de Servicio</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                                data-tab="unidades">
+                                <i-lucide [img]="houseIcon" class="w-5 h-5"></i-lucide>
+                                <span>Unidades</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                                data-tab="contratos">
+                                <i-lucide [img]="fileTextIcon" class="w-5 h-5"></i-lucide>
+                                <span>Contratos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                                data-tab="inquilinos">
+                                <i-lucide [img]="usersIcon" class="w-5 h-5"></i-lucide>
+                                <span>Inquilinos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                                data-tab="recibos">
+                                <i-lucide [img]="receiptIcon" class="w-5 h-5"></i-lucide>
+                                <span>Recibos</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div id="sidebarOverlay" (click)="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-40 {{this.getOverlayClass}} lg:hidden"></div>
+
+        <!-- Main Content Area -->
+        <div class="content-desktop flex-1 px-4 sm:px-6 lg:px-8 py-8 {{this.getMainContentClass}}" id="mainContent">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>

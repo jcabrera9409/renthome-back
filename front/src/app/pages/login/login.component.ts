@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LucideAngularModule, BuildingIcon } from 'lucide-angular';
 
 @Component({
@@ -10,4 +11,12 @@ import { LucideAngularModule, BuildingIcon } from 'lucide-angular';
 })
 export class LoginComponent {
   readonly buildingIcon = BuildingIcon
+
+  constructor(
+    private router: Router
+  ) { }
+
+  onSubmit() {
+    this.router.navigate(['/admin']);
+  }
 }
