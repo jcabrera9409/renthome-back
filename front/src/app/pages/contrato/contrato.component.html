@@ -1,0 +1,52 @@
+<!-- Contratos Tab -->
+<div id="contratos" class="tab-content">
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-900">Contratos de Alquiler</h2>
+            <button id="addContratoBtn"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                Nuevo Contrato
+            </button>
+        </div>
+
+        <div class="p-6">
+            <div class="mb-4">
+                <input type="text" id="searchContratos" placeholder="Buscar contratos..."
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Inquilino</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Inicio</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fin</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Renta</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contratosTable" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-gray-900)">A-102</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">Jose Cabrera</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">14/01/2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">14/01/2026</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">S/ 1200.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-success-100); color: var(--color-success-800)">Activo</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
