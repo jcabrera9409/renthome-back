@@ -1,0 +1,71 @@
+<!-- Recibos Tab -->
+<div id="recibos" class="tab-content">
+    <div class="bg-white rounded-lg shadow">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-900">Gestión de Recibos</h2>
+            <button id="generateRecibosBtn"
+                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <i-lucide [name]="receiptIcon" class="w-4 h-4 inline mr-2"></i-lucide>
+                Generar Recibos del Mes
+            </button>
+        </div>
+
+        <div class="p-6">
+            <div class="mb-4 flex space-x-4">
+                <div class="custom-select">
+                    <select id="mesSelector">
+                        <option value="07-2025">Julio 2025</option>
+                        <option value="06-2025">Junio 2025</option>
+                        <option value="05-2025">Mayo 2025</option>
+                    </select>
+                </div>
+                <input type="text" id="searchRecibos" placeholder="Buscar recibos..." style="width: 100%;"
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Período</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Inquilino</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monto Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recibosTable" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-gray-900)">07-2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">A-102</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">Jose Cabrera</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">S/ 925.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-success-100); color: var(--color-success-800)">Pagado</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Ver</button>
+                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-gray-900)">07-2025</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">A-102</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">Jose Cabrera</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">S/ 925.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-gray-100); color: var(--color-gray-800)">Pendiente</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Ver</button>
+                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                                <button style="color: var(--color-success-600)" class="hover:opacity-75 transition-opacity">Marcar Pagado</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
