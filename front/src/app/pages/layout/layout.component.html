@@ -39,48 +39,48 @@
                 <nav class="p-4 h-full">
                     <ul class="space-y-2">
                         <li>
-                            <button
-                                class="nav-tab active w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors bg-indigo-100 text-indigo-700"
+                            <button [routerLink]="['/admin']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('')}}"
                                 data-tab="dashboard">
                                 <i-lucide [img]="layoutDashboardIcon" class="w-5 h-5"></i-lucide>
                                 <span>Dashboard</span>
                             </button>
                         </li>
                         <li>
-                            <button
-                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                            <button [routerLink]="['/admin/tarifa']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('tarifa')}}"
                                 data-tab="tarifas">
                                 <i-lucide [img]="creditCardIcon" class="w-5 h-5"></i-lucide>
                                 <span>Tarifas de Servicio</span>
                             </button>
                         </li>
                         <li>
-                            <button
-                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                            <button [routerLink]="['/admin/unidad']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('unidad')}}"
                                 data-tab="unidades">
                                 <i-lucide [img]="houseIcon" class="w-5 h-5"></i-lucide>
                                 <span>Unidades</span>
                             </button>
                         </li>
                         <li>
-                            <button
-                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                            <button [routerLink]="['/admin/contrato']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('contrato')}}"
                                 data-tab="contratos">
                                 <i-lucide [img]="fileTextIcon" class="w-5 h-5"></i-lucide>
                                 <span>Contratos</span>
                             </button>
                         </li>
                         <li>
-                            <button
-                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                            <button [routerLink]="['/admin/inquilino']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('inquilino')}}"
                                 data-tab="inquilinos">
                                 <i-lucide [img]="usersIcon" class="w-5 h-5"></i-lucide>
                                 <span>Inquilinos</span>
                             </button>
                         </li>
                         <li>
-                            <button
-                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors text-gray-600 hover:bg-gray-100"
+                            <button [routerLink]="['/admin/recibo']"
+                                class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('recibo')}}"
                                 data-tab="recibos">
                                 <i-lucide [img]="receiptIcon" class="w-5 h-5"></i-lucide>
                                 <span>Recibos</span>

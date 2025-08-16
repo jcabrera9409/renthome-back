@@ -1,11 +1,11 @@
 import { Component, HostListener } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { Building2Icon, CreditCardIcon, FileTextIcon, HouseIcon, LayoutDashboardIcon, LogOutIcon, LucideAngularModule, MenuIcon, ReceiptIcon, UsersIcon, XIcon } from 'lucide-angular';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, LucideAngularModule],
+  imports: [RouterOutlet, LucideAngularModule, RouterModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -25,6 +25,8 @@ export class LayoutComponent {
   isDesktopCollapse = false;
   isDesktop = window.innerWidth >= 1024;  
 
+  constructor(private router: Router) {}
+
   toggleSidebar() {
     if (this.isDesktop) {
       this.isDesktopCollapse = !this.isDesktopCollapse;
@@ -36,6 +38,15 @@ export class LayoutComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.isDesktop = (event.target as Window).innerWidth >= 1024;
+  }
+
+  getCssTabPage(tabName: string): string {
+    const page = this.router.url.replaceAll('/admin', '').replaceAll('/', '');
+    if (page === tabName) {
+      return "bg-indigo-100 text-indigo-700";
+    }
+
+    return "text-gray-600 hover:bg-gray-100"
   }
 
   get getSidebarClass() {
