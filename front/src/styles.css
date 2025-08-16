@@ -257,6 +257,10 @@
            RESPONSIVE DESIGN
            ============================================ */
 @media (max-width: 640px) {
+    .custom-select {
+        width: 100% !important;
+    }
+
     .custom-dropdown-options {
         position: fixed;
         left: 1rem;
@@ -282,6 +286,11 @@
         width: 100% !important;
         margin: 0 !important;
         margin-top: 5px !important;
+    }
+
+    .grid {
+        display: block !important;
+        margin-top: 0px !important;
     }
 }
 
