@@ -268,6 +268,36 @@
     .title-admin {
         display: none;
     }
+
+    .flex-responsive {
+        display: block !important;
+    }
+
+    .flex-responsive > .custom-select,
+    .flex-responsive > .custom-select > select {
+        width: 100% !important;
+    }
+
+    .flex-responsive > input {
+        width: 100% !important;
+        margin: 0 !important;
+        margin-top: 5px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .title-page-responsive {
+        display: block !important;
+    }
+
+    .title-page-responsive > h2 {
+        text-align: center !important;
+    }
+
+    .title-page-responsive > button {
+        width: 100% !important;
+        margin-top: 5px !important;
+    }
 }
 
 /* ============================================
