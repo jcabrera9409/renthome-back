@@ -1,15 +1,20 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { Building2Icon, CreditCardIcon, FileTextIcon, HouseIcon, LayoutDashboardIcon, LogOutIcon, LucideAngularModule, MenuIcon, ReceiptIcon, UsersIcon, XIcon } from 'lucide-angular';
+import { CasaService } from '../../_service/casa.service';
+import { CasaDTO } from '../../_model/dto';
+import { NotificationService } from '../../_service/notification.service';
+import { Message } from '../../_model/message';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, LucideAngularModule, RouterModule],
+  imports: [RouterOutlet, LucideAngularModule, RouterModule, CommonModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   readonly menuIcon = MenuIcon
   readonly xIcon = XIcon
   readonly buildingIcon = Building2Icon
@@ -25,7 +30,40 @@ export class LayoutComponent {
   isDesktopCollapse = false;
   isDesktop = window.innerWidth >= 1024;  
 
-  constructor(private router: Router) {}
+  casas: CasaDTO[] = [];
+
+  constructor(
+    private router: Router,
+    private casaService: CasaService,
+    private notificationService: NotificationService
+  ) { }
+
+  ngOnInit(): void {
+    this.listarCasas();
+  }
+
+  listarCasas() {
+    this.casaService.listarMisCasas().subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.casas = data.data;
+          this.casaService.setCasas(this.casas);
+        } else {
+          this.casaService.setCasaSeleccionada(null);
+          this.notificationService.setMessageChange(
+            Message.error('No se encontraron casas')
+          );
+        }
+
+      },
+      error: (error) => {
+        this.casaService.setCasaSeleccionada(null);
+        this.notificationService.setMessageChange(
+          Message.error('Error al cargar las casas')
+        );
+      }
+    });
+  }
 
   toggleSidebar() {
     if (this.isDesktop) {

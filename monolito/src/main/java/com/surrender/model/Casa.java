@@ -3,6 +3,8 @@ package com.surrender.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +28,11 @@ public class Casa {
 	@Column(nullable = false)
 	private String direccion;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "casa")
 	private List<UnidadHabitacional> unidades;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "casas")
 	private List<Usuario> usuarios;
 

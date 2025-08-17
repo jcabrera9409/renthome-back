@@ -14,7 +14,7 @@ export class UtilMethods {
     }
 
     public getJwtToken(): string {
-        let token = localStorage.getItem(UtilMethods.envService.getTokenName);
+        let token = sessionStorage.getItem(UtilMethods.envService.getTokenName);
         return token;
     }
 
@@ -73,10 +73,10 @@ export class UtilMethods {
     }
 
     public setJwtToken(token: string): void {
-        localStorage.setItem(UtilMethods.envService.getTokenName, token);
+        sessionStorage.setItem(UtilMethods.envService.getTokenName, token);
     }
 
     public removeJwtToken(): void {
-        localStorage.removeItem(UtilMethods.envService.getTokenName);
+        sessionStorage.removeItem(UtilMethods.envService.getTokenName);
     }
 }

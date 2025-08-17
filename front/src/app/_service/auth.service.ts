@@ -35,7 +35,7 @@ export class AuthService {
   logout() {
     this.http.get(`${this.envService.getApiUrl}/auth/logout`)
       .subscribe(() => {
-        localStorage.clear();
+        sessionStorage.clear();
         this.router.navigate(['login']);
       })
 

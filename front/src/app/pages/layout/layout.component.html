@@ -18,9 +18,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="custom-select">
                         <select id="propertySelector">
-                            <option value="casa1">Casa Vista Hermosa</option>
-                            <option value="edificio1">Edificio Central Plaza</option>
-                            <option value="casa2">Casa Los Pinos</option>
+                            <option *ngFor="let casa of casas" [value]="casa.id">{{ casa.nombre }}</option>
                         </select>
                     </div>
 
