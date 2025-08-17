@@ -31,6 +31,9 @@ public class TarifaServicio {
 	@Column(nullable = false)
 	private float precioUnidad;
 	
+	@Column(nullable = false)
+	private boolean activo;
+	
 	@ManyToOne
 	private Casa casa;
 
@@ -80,6 +83,14 @@ public class TarifaServicio {
 
 	public void setPrecioUnidad(float precioUnidad) {
 		this.precioUnidad = precioUnidad;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
 	public Casa getCasa() {

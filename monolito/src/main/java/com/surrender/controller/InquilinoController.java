@@ -1,16 +1,25 @@
 package com.surrender.controller;
 
-import com.surrender.dto.APIResponseDTO;
-import com.surrender.model.Inquilino;
-import com.surrender.service.IInquilinoService;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.surrender.dto.APIResponseDTO;
+import com.surrender.model.Inquilino;
+import com.surrender.service.IInquilinoService;
 
 @RestController
 @RequestMapping("/v1/inquilinos")
@@ -51,21 +60,6 @@ public class InquilinoController {
         return ResponseEntity.status(response.isSuccess() ? 200 : 400).body(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<APIResponseDTO<Void>> eliminar(@PathVariable Integer id) {
-        logger.info("Eliminando inquilino con id: {}", id);
-        try {
-            inquilinoService.eliminar(id);
-            APIResponseDTO<Void> response = APIResponseDTO.success("Inquilino eliminado", null, 200);
-            logger.info("Inquilino eliminado con id: {}", id);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("Error al eliminar inquilino con id: {}: {}", id, e.getMessage());
-            APIResponseDTO<Void> response = APIResponseDTO.error("No se pudo eliminar el inquilino", 400);
-            return ResponseEntity.status(400).body(response);
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<APIResponseDTO<Inquilino>> listarPorId(@PathVariable Integer id) {
         logger.info("Buscando inquilino por id: {}", id);
@@ -81,10 +75,10 @@ public class InquilinoController {
     }
 
     @GetMapping
-    public ResponseEntity<APIResponseDTO<Iterable<Inquilino>>> listarTodos() {
+    public ResponseEntity<APIResponseDTO<List<Inquilino>>> listarTodos() {
         logger.info("Listando todos los inquilinos");
-        Iterable<Inquilino> lista = inquilinoService.listarTodos();
-        APIResponseDTO<Iterable<Inquilino>> response = APIResponseDTO.success("Lista de inquilinos", lista, 200);
+        List<Inquilino> lista = inquilinoService.listarTodos();
+        APIResponseDTO<List<Inquilino>> response = APIResponseDTO.success("Lista de inquilinos", lista, 200);
         return ResponseEntity.ok(response);
     }
 
