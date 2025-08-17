@@ -1,0 +1,9 @@
+<!-- Notificación dinámica que aparece cuando isVisible es true -->
+<div *ngIf="isVisible && currentMessage" 
+     class="notification" 
+     [ngClass]="getNotificationClass()">
+    <div class="flex items-center">
+        <span class="text-lg mr-2">{{ getNotificationIcon() }}</span>
+        <span class="text-sm font-medium" [innerHTML]="currentMessage.message"></span>
+    </div>
+</div>
