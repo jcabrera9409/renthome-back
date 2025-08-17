@@ -45,8 +45,8 @@
                                 <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-success-100); color: var(--color-success-800)">Pagado</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Ver</button>
-                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity" (click)="openViewDialog()">Ver</button>
+                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity" (click)="openEditDialog()">Editar</button>
                             </td>
                         </tr>
                         <tr>
@@ -58,8 +58,8 @@
                                 <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-gray-100); color: var(--color-gray-800)">Pendiente</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Ver</button>
-                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity" (click)="openViewDialog()">Ver</button>
+                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity" (click)="openEditDialog()">Editar</button>
                                 <button style="color: var(--color-success-600)" class="hover:opacity-75 transition-opacity">Marcar Pagado</button>
                             </td>
                         </tr>
