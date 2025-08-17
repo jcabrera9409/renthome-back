@@ -1,9 +1,5 @@
 package com.surrender.repo;
 
-import com.surrender.model.Usuario;
-
-import jakarta.transaction.Transactional;
-
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -12,8 +8,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.surrender.model.Usuario;
+
+import jakarta.transaction.Transactional;
+
 public interface UsuarioRepo extends IGenericRepo<Usuario, Integer> {
     // Puedes agregar métodos personalizados aquí si es necesario
+    @Override
     Page<Usuario> findAll(Pageable pageable);
     Optional<Usuario> findByEmail(String email);
 

@@ -63,6 +63,7 @@ public class Usuario implements UserDetails {
 		this.email = email;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
