@@ -5,13 +5,14 @@ import { UnidadHabitacionalComponent } from './unidad-habitacional/unidad-habita
 import { ContratoComponent } from './contrato/contrato.component';
 import { InquilinoComponent } from './inquilino/inquilino.component';
 import { ReciboComponent } from './recibo/recibo.component';
+import { AuthGuard } from '../_service/guard.service';
 
 
 export const pagesRoutes: Routes = [
-    { path: '', component: DashboardComponent },
-    { path: 'tarifa', component: TarifaComponent },
-    { path: 'unidad', component: UnidadHabitacionalComponent },
-    { path: 'contrato', component: ContratoComponent },
-    { path: 'inquilino', component: InquilinoComponent },
-    { path: 'recibo', component: ReciboComponent }
+    { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'tarifa', component: TarifaComponent, canActivate: [AuthGuard] },
+    { path: 'unidad', component: UnidadHabitacionalComponent, canActivate: [AuthGuard] },
+    { path: 'contrato', component: ContratoComponent, canActivate: [AuthGuard] },
+    { path: 'inquilino', component: InquilinoComponent, canActivate: [AuthGuard] },
+    { path: 'recibo', component: ReciboComponent, canActivate: [AuthGuard] }
 ];
