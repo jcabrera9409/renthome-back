@@ -5,6 +5,6 @@ export interface APIResponseDTO<T> {
 }
 
 export interface AuthenticationResponseDTO {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }

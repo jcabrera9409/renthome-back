@@ -3,8 +3,8 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 
 export class UtilMethods {
 
-    private static utilMethods: UtilMethods;
-    private static envService: EnvService;
+    private static utilMethods: UtilMethods = undefined;
+    private static envService: EnvService = undefined;
     static getInstance(): UtilMethods {
         if (!UtilMethods.utilMethods) {
             UtilMethods.utilMethods = new UtilMethods();

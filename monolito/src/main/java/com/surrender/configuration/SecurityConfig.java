@@ -64,7 +64,7 @@ public class SecurityConfig {
                         })
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/v1/auth/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> {
                             logger.info("Logout exitoso para usuario: {}", authentication != null ? authentication.getName() : "anónimo");

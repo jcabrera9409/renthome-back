@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.surrender.dto.AuthenticationResponse;
+import com.surrender.dto.APIResponseDTO;
 import com.surrender.model.Usuario;
 import com.surrender.service.impl.AuthenticationService;
 
@@ -25,15 +26,20 @@ public class AuthenticationController {
   private AuthenticationService authService;
 
   @PostMapping("/login")
-  public ResponseEntity<AuthenticationResponse> login(@RequestBody Usuario request) {
+  public ResponseEntity<APIResponseDTO<AuthenticationResponse>> login(@RequestBody Usuario request) {
       logger.info("Intentando autenticar usuario con email: {}", request.getEmail());
       AuthenticationResponse response = authService.authenticate(request);
       HttpStatus status = (response.getAccessToken() != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
       if (status == HttpStatus.OK) {
           logger.info("Autenticación exitosa para usuario: {}", request.getEmail());
+          return ResponseEntity.status(status).body(
+            APIResponseDTO.success("Usuario autenticado", response, status.value())
+          );
       } else {
           logger.warn("Autenticación fallida para usuario: {}", request.getEmail());
+          return ResponseEntity.status(status).body(
+            APIResponseDTO.error("Autenticación fallida", status.value())
+          );
       }
-      return ResponseEntity.status(status).body(response);
   }
 }

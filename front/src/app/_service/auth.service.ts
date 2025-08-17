@@ -16,21 +16,19 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private envService: EnvService,
-    private utilMethods: UtilMethods
+    private envService: EnvService
   ) { }
 
   login(email: string, password: string) {
     let user: User = new User(); 
     user.email = email;
-    user.username = email;
     user.password = password;
     
     return this.http.post<APIResponseDTO<AuthenticationResponseDTO>>(`${this.url}/login`, user);
   }
 
   isLogged() {
-    let token = this.utilMethods.getJwtToken();
+    let token = UtilMethods.getInstance().getJwtToken();
     return token != null;
   }
 
