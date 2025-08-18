@@ -6,11 +6,12 @@ import { CasaDTO } from '../../_model/dto';
 import { NotificationService } from '../../_service/notification.service';
 import { Message } from '../../_model/message';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, LucideAngularModule, RouterModule, CommonModule],
+  imports: [RouterOutlet, LucideAngularModule, RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -32,14 +33,30 @@ export class LayoutComponent implements OnInit {
 
   casas: CasaDTO[] = [];
 
+  casaControl = new FormControl<CasaDTO | null>(null);
+
   constructor(
     private router: Router,
     private casaService: CasaService,
     private notificationService: NotificationService
   ) { }
 
+  // Función para comparar objetos CasaDTO en el select
+  compareCasas(casa1: CasaDTO, casa2: CasaDTO): boolean {
+    return casa1 && casa2 ? casa1.id === casa2.id : casa1 === casa2;
+  }
+
   ngOnInit(): void {
     this.listarCasas();
+    this.casaControl.valueChanges.subscribe((casa: CasaDTO | null) => {
+      this.casaService.setCasaSeleccionada(casa);
+    });
+
+    this.casaService.getCasaSeleccionada().subscribe({
+      next: () => {
+        this.casaControl.setValue(this.casaService.getCasaStorage(), { emitEvent: false });
+      }
+    });
   }
 
   listarCasas() {
@@ -49,15 +66,13 @@ export class LayoutComponent implements OnInit {
           this.casas = data.data;
           this.casaService.setCasas(this.casas);
         } else {
-          this.casaService.setCasaSeleccionada(null);
           this.notificationService.setMessageChange(
             Message.error('No se encontraron casas')
           );
         }
 
       },
-      error: (error) => {
-        this.casaService.setCasaSeleccionada(null);
+        error: (error) => {
         this.notificationService.setMessageChange(
           Message.error('Error al cargar las casas')
         );

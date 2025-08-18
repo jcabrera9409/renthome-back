@@ -23,16 +23,12 @@ export class CasaService {
     return this.http.get<APIResponseDTO<CasaDTO[]>>(`${this.url}/mis-casas`);
   }
 
-  getCasaSeleccionada(): CasaDTO | null {
-    return JSON.parse(sessionStorage.getItem('casaSeleccionada') || 'null');
+  getCasaSeleccionada(): Observable<CasaDTO | null> {
+    return this.casaSeleccionada.asObservable();
   }
 
-  setCasaSeleccionada(casa: CasaDTO) {
-    if (casa) {
-      sessionStorage.setItem('casaSeleccionada', JSON.stringify(casa));
-    } else {
-      sessionStorage.removeItem('casaSeleccionada');
-    }
+  setCasaSeleccionada(casa: CasaDTO | null) {
+    this.saveCasaStorage(casa);
     this.casaSeleccionada.next(casa);
   }
 
@@ -42,20 +38,37 @@ export class CasaService {
 
   setCasas(casas: CasaDTO[]) {
     if (casas.length == 0) {
-      this.setCasaSeleccionada(null);
       this.casas.next(casas);
+      this.casaSeleccionada.next(null);
       return;
     }
-    
-    const casaActual: CasaDTO = this.getCasaSeleccionada();
-    if(casaActual) {
-      const index = casas.findIndex(c => c.id === casaActual.id);
-      if(index !== -1) {
+
+    const casaStorage = this.getCasaStorage();
+    if (casaStorage) {
+      const index = casas.findIndex(c => c.id === casaStorage.id);
+
+      if (index !== -1) {
         this.setCasaSeleccionada(casas[index]);
+      } else {
+        this.setCasaSeleccionada(casas[0]);
       }
+    } else {
+      this.setCasaSeleccionada(casas[0]);
     }
-    this.setCasaSeleccionada(casas[0]);
+
     this.casas.next(casas);
   }
 
+  saveCasaStorage(casa: CasaDTO | null) {
+    if (casa) {
+      sessionStorage.setItem('casaSeleccionada', JSON.stringify(casa));
+    } else {
+      sessionStorage.removeItem('casaSeleccionada');
+    }
+  }
+
+  getCasaStorage(): CasaDTO | null {
+    const casa = sessionStorage.getItem('casaSeleccionada');
+    return casa ? JSON.parse(casa) : null;
+  }
 }

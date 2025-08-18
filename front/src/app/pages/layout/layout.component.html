@@ -17,8 +17,8 @@
                 <!-- Property Selector -->
                 <div class="flex items-center space-x-4">
                     <div class="custom-select">
-                        <select id="propertySelector">
-                            <option *ngFor="let casa of casas" [value]="casa.id">{{ casa.nombre }}</option>
+                        <select id="propertySelector" [formControl]="casaControl" [compareWith]="compareCasas">
+                            <option *ngFor="let casa of casas" [ngValue]="casa">{{ casa.nombre }}</option>
                         </select>
                     </div>
 
