@@ -8,11 +8,13 @@ import { NotificationService } from '../../_service/notification.service';
 import { finalize } from 'rxjs';
 import { Message } from '../../_model/message';
 import { CasaService } from '../../_service/casa.service';
+import { LoaderComponent } from '../../shared/loader/loader.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tarifa',
   standalone: true,
-  imports: [LucideAngularModule, MatDialogModule],
+  imports: [LucideAngularModule, MatDialogModule, LoaderComponent, CommonModule],
   templateUrl: './tarifa.component.html',
   styleUrl: './tarifa.component.css'
 })
@@ -45,9 +47,9 @@ export class TarifaComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  openDialog(tarifa?: Tarifa) {
     const dialogRef = this.dialog.open(TarifaEdicionDialogComponent, {
-      data: { /* Pass data to the dialog if needed */ },
+      data: tarifa,
       panelClass: 'w-full'
     });
   }
@@ -67,7 +69,6 @@ export class TarifaComponent implements OnInit {
       )
       .subscribe((response) => {
         if(response.success) {
-          console.log(response.data)
           this.tarifaService.setObjetoCambio(response.data);
         } else {
           this.tarifaService.setObjetoCambio([]);
