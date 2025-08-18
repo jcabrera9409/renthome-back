@@ -77,30 +77,31 @@ public class TarifaServicioController {
         return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<APIResponseDTO<List<TarifaServicio>>> listarTodos() {
-        logger.info("Listando todas las tarifas de servicio");
-        List<TarifaServicio> lista = tarifaServicioService.listarTodos();
-        APIResponseDTO<List<TarifaServicio>> response = APIResponseDTO.success("Lista de tarifas de servicio", lista, 200);
+    @GetMapping("/casa/{casaId}")
+    public ResponseEntity<APIResponseDTO<List<TarifaServicio>>> listarTodos(@PathVariable Integer casaId) {
+        logger.info("Listando todas las tarifas de servicio para casa ID: {}", casaId);
+        List<TarifaServicio> lista = tarifaServicioService.listarPorCasa(casaId);
+        APIResponseDTO<List<TarifaServicio>> response = APIResponseDTO.success("Lista de tarifas de servicio para casa " + casaId, lista, 200);
+        logger.info("Se encontraron {} tarifas para la casa {}", lista.size(), casaId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/activos")
-    public ResponseEntity<APIResponseDTO<List<TarifaServicio>>> listarActivos() {
-        logger.info("Listando tarifas de servicio activas");
-        List<TarifaServicio> activos = tarifaServicioService.listarActivos();
-        APIResponseDTO<List<TarifaServicio>> response = APIResponseDTO.success("Lista de tarifas de servicio activas", activos, 200);
-        logger.info("Se encontraron {} tarifas activas", activos.size());
+    @GetMapping("/casa/{casaId}/activos")
+    public ResponseEntity<APIResponseDTO<List<TarifaServicio>>> listarActivos(@PathVariable Integer casaId) {
+        logger.info("Listando tarifas de servicio activas para casa ID: {}", casaId);
+        List<TarifaServicio> activos = tarifaServicioService.listarActivosPorCasa(casaId);
+        APIResponseDTO<List<TarifaServicio>> response = APIResponseDTO.success("Lista de tarifas de servicio activas para casa " + casaId, activos, 200);
+        logger.info("Se encontraron {} tarifas activas para la casa {}", activos.size(), casaId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/filtrar")
-    public ResponseEntity<APIResponseDTO<Page<TarifaServicio>>> filtrar(Pageable pageable) {
-        logger.info("Filtrando tarifas de servicio con paginación: página {}, tamaño {}", 
-            pageable.getPageNumber(), pageable.getPageSize());
-        Page<TarifaServicio> page = tarifaServicioService.filtrar(pageable);
-        APIResponseDTO<Page<TarifaServicio>> response = APIResponseDTO.success("Página de tarifas de servicio", page, 200);
-        logger.info("Página obtenida: {} elementos de {} total", page.getNumberOfElements(), page.getTotalElements());
+    @GetMapping("/casa/{casaId}/filtrar")
+    public ResponseEntity<APIResponseDTO<Page<TarifaServicio>>> filtrar(@PathVariable Integer casaId, Pageable pageable) {
+        logger.info("Filtrando tarifas de servicio para casa ID: {} con paginación: página {}, tamaño {}", 
+            casaId, pageable.getPageNumber(), pageable.getPageSize());
+        Page<TarifaServicio> page = tarifaServicioService.filtrarPorCasa(casaId, pageable);
+        APIResponseDTO<Page<TarifaServicio>> response = APIResponseDTO.success("Página de tarifas de servicio para casa " + casaId, page, 200);
+        logger.info("Página obtenida: {} elementos de {} total para casa {}", page.getNumberOfElements(), page.getTotalElements(), casaId);
         return ResponseEntity.ok(response);
     }
 

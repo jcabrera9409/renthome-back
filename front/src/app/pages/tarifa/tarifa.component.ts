@@ -7,6 +7,7 @@ import { Tarifa } from '../../_model/tarifa';
 import { NotificationService } from '../../_service/notification.service';
 import { finalize } from 'rxjs';
 import { Message } from '../../_model/message';
+import { CasaService } from '../../_service/casa.service';
 
 @Component({
   selector: 'app-tarifa',
@@ -22,6 +23,7 @@ export class TarifaComponent implements OnInit {
   tarifas: Tarifa[];
 
   constructor(
+    private casaService: CasaService,
     private tarifaService: TarifaService,
     private notificationService: NotificationService,
     private dialog: MatDialog
@@ -35,6 +37,12 @@ export class TarifaComponent implements OnInit {
         this.tarifas = tarifas;
       }
     });
+
+    this.casaService.getCasaSeleccionada().subscribe({
+      next: () => {
+        this.getAllTarifas();
+      }
+    });
   }
 
   openDialog() {
@@ -45,8 +53,13 @@ export class TarifaComponent implements OnInit {
   }
 
   private getAllTarifas() {
+    const casaSeleccionada = this.casaService.getCasaStorage();
+    if (!casaSeleccionada) {
+      this.tarifaService.setObjetoCambio([]);
+      return;
+    }
     this.isLoading = true;
-    this.tarifaService.listar()
+    this.tarifaService.listar(casaSeleccionada.id)
       .pipe(
         finalize(() => {
           this.isLoading = false;

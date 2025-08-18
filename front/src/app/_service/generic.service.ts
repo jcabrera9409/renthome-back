@@ -16,12 +16,12 @@ export class GenericService<T> {
     protected url: String
   ) { }
 
-  listar() {
-    return this.http.get<APIResponseDTO<T[]>>(`${this.url}`);
+  listar(casaId: number) {
+    return this.http.get<APIResponseDTO<T[]>>(`${this.url}/casa/${casaId}`);
   }
 
-  listarPaginado(filtro: string, page: number, size: number) {
-    return this.http.get<APIResponseDTO<PageableResponseDTO<T>>>(`${this.url}/filtrar?filtro=${filtro}&page=${page}&size=${size}`);
+  listarPaginado(casaId: number, filtro: string, page: number, size: number) {
+    return this.http.get<APIResponseDTO<PageableResponseDTO<T>>>(`${this.url}/casa/${casaId}/filtrar?filtro=${filtro}&page=${page}&size=${size}`);
   }
 
   listarPorId(id: number) {

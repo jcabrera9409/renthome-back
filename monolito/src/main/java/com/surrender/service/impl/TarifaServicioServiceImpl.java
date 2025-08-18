@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.surrender.model.TarifaServicio;
@@ -52,5 +54,30 @@ public class TarifaServicioServiceImpl extends CRUDImpl<TarifaServicio, Integer>
             logger.error("Error al cambiar estado de tarifa con id: {}: {}", id, e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public List<TarifaServicio> listarPorCasa(Integer casaId) {
+        logger.info("Listando tarifas de servicio para casa ID: {}", casaId);
+        List<TarifaServicio> tarifas = tarifaServicioRepo.findByCasaId(casaId);
+        logger.info("Se encontraron {} tarifas para la casa {}", tarifas.size(), casaId);
+        return tarifas;
+    }
+
+    @Override
+    public List<TarifaServicio> listarActivosPorCasa(Integer casaId) {
+        logger.info("Listando tarifas de servicio activas para casa ID: {}", casaId);
+        List<TarifaServicio> tariffasActivas = tarifaServicioRepo.findByCasaIdAndActivoTrue(casaId);
+        logger.info("Se encontraron {} tarifas activas para la casa {}", tariffasActivas.size(), casaId);
+        return tariffasActivas;
+    }
+
+    @Override
+    public Page<TarifaServicio> filtrarPorCasa(Integer casaId, Pageable pageable) {
+        logger.info("Filtrando tarifas de servicio para casa ID: {} con paginación", casaId);
+        Page<TarifaServicio> page = tarifaServicioRepo.findByCasaId(casaId, pageable);
+        logger.info("Se obtuvo página con {} elementos de {} total para casa {}", 
+            page.getNumberOfElements(), page.getTotalElements(), casaId);
+        return page;
     }
 }
