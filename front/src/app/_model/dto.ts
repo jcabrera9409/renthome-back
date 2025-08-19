@@ -19,13 +19,10 @@ export interface ChangeStatusRequest {
 
 export interface PageableResponseDTO<T> {
   content: T[];
-  links: any[];
-  page: {
-      number: number;
-      size: number;
-      totalElements: number;
-      totalPages: number;
-  }
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface ConfirmDataDTO {

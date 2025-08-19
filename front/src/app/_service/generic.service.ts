@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 export class GenericService<T> {
 
   private objetoCambio: Subject<T[]> = new Subject<T[]>();
+  private objetoPageableCambio: Subject<PageableResponseDTO<T>> = new Subject<PageableResponseDTO<T>>();
   private mensajeCambio: Subject<string> = new Subject<string>();
 
   constructor(
@@ -48,6 +49,10 @@ export class GenericService<T> {
     return this.mensajeCambio;
   }
 
+  public getObjetoPageableCambio(): Subject<PageableResponseDTO<T>> {
+    return this.objetoPageableCambio;
+  }
+
   public setObjetoCambio(objetos: T[]) {
     this.objetoCambio.next(objetos);
   }
@@ -55,4 +60,9 @@ export class GenericService<T> {
   public setMensajeCambio(mensaje: string) {
     this.mensajeCambio.next(mensaje);
   }
+
+  public setObjetoPageableCambio(objeto: PageableResponseDTO<T>) {
+    this.objetoPageableCambio.next(objeto);
+  }
+
 }

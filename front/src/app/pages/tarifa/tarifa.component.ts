@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LucideAngularModule, PlusIcon } from 'lucide-angular';
+import { ChevronLeftIcon, ChevronRightIcon, LucideAngularModule, PlusIcon } from 'lucide-angular';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TarifaEdicionDialogComponent } from '../../modals/tarifa-edicion-dialog/tarifa-edicion-dialog.component';
 import { TarifaService } from '../../_service/tarifa.service';
@@ -12,16 +12,24 @@ import { LoaderComponent } from '../../shared/loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 import { ChangeStatusRequest } from '../../_model/dto';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-tarifa',
   standalone: true,
-  imports: [LucideAngularModule, MatDialogModule, LoaderComponent, CommonModule],
+  imports: [LucideAngularModule, MatDialogModule, LoaderComponent, CommonModule, PaginationComponent],
   templateUrl: './tarifa.component.html',
   styleUrl: './tarifa.component.css'
 })
 export class TarifaComponent implements OnInit {
   readonly plusIcon = PlusIcon;
+  readonly chevronLeftIcon = ChevronLeftIcon;
+  readonly chevronRightIcon = ChevronRightIcon;
+
+  currentPage = 0;
+  pageSize = 10;
+  totalElements = 0;
+  totalPages = 1;
 
   isLoading = false;
   tarifas: Tarifa[];
@@ -36,9 +44,19 @@ export class TarifaComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTarifas();
 
-    this.tarifaService.getObjetoCambio().subscribe({
-      next: (tarifas) => {
-        this.tarifas = tarifas;
+    this.tarifaService.getObjetoPageableCambio().subscribe({
+      next: (response) => {
+        if (!response) {
+          this.tarifas = [];
+          this.totalElements = 0;
+          this.totalPages = 1;
+          return;
+        }
+        this.tarifas = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.number;
+        this.pageSize = response.size;
       }
     });
 
@@ -74,6 +92,17 @@ export class TarifaComponent implements OnInit {
     });
   }
 
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.getAllTarifas();
+  }
+
+  onPageSizeChange(size: number) {
+    this.pageSize = size;
+    this.currentPage = 0;
+    this.getAllTarifas();
+  }
+
   private inactivateTarifa(tarifa: Tarifa) {
     this.isLoading = true;
     const changeStatusRequest: ChangeStatusRequest = {
@@ -89,7 +118,7 @@ export class TarifaComponent implements OnInit {
           );
           return EMPTY;
         }),
-        switchMap(() => this.tarifaService.listar(tarifa.casa.id)),
+        switchMap(() => this.tarifaService.listarPaginado(tarifa.casa.id, '', this.currentPage, this.pageSize)),
         catchError(error => {
           this.notificationService.setMessageChange(
             Message.error("Ocurrio un error al listar las tarifas.", error)
@@ -102,7 +131,7 @@ export class TarifaComponent implements OnInit {
       )
       .subscribe((response) => {
         if (response.success) {
-          this.tarifaService.setObjetoCambio(response.data);
+          this.tarifaService.setObjetoPageableCambio(response.data);
           this.notificationService.setMessageChange(
             Message.success("Tarifa inactivada correctamente")
           );
@@ -117,11 +146,11 @@ export class TarifaComponent implements OnInit {
   private getAllTarifas() {
     const casaSeleccionada = this.casaService.getCasaStorage();
     if (!casaSeleccionada) {
-      this.tarifaService.setObjetoCambio([]);
+      this.tarifaService.setObjetoPageableCambio(null);
       return;
     }
     this.isLoading = true;
-    this.tarifaService.listar(casaSeleccionada.id)
+    this.tarifaService.listarPaginado(casaSeleccionada.id, '', this.currentPage, this.pageSize)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -129,9 +158,9 @@ export class TarifaComponent implements OnInit {
       )
       .subscribe((response) => {
         if(response.success) {
-          this.tarifaService.setObjetoCambio(response.data);
+          this.tarifaService.setObjetoPageableCambio(response.data);
         } else {
-          this.tarifaService.setObjetoCambio([]);
+          this.tarifaService.setObjetoPageableCambio(null);
           this.notificationService.setMessageChange(
             Message.error("Error al cargar las tarifas", response)
           );

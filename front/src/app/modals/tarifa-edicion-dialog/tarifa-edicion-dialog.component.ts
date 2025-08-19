@@ -78,7 +78,7 @@ export class TarifaEdicionDialogComponent {
           );
           return EMPTY;
         }),
-        switchMap(() => this.tarifaService.listar(tarifaData.casa.id)),
+        switchMap(() => this.tarifaService.listarPaginado(tarifaData.casa.id, '', 0, 10)),
         catchError(error => {
           this.notificationService.setMessageChange(
             Message.error('Ocurrio un error al listar las tarifas.', error)
@@ -91,7 +91,7 @@ export class TarifaEdicionDialogComponent {
       )
       .subscribe((response) => {
         if (response.success) {
-          this.tarifaService.setObjetoCambio(response.data);
+          this.tarifaService.setObjetoPageableCambio(response.data);
           this.notificationService.setMessageChange(
             Message.success('La tarifa se ha guardado correctamente.')
           );

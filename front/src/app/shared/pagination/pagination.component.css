@@ -1,0 +1,20 @@
+.paginado .controls .button {
+    border-color: var(--color-gray-300); 
+    color: var(--color-gray-700); 
+    background-color: white;
+}
+
+.paginado .controls button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border-color: var(--color-gray-300); 
+    color: var(--color-gray-400); 
+    background-color: var(--color-gray-50);
+}
+
+@media (max-width: 640px) {
+    .paginado {
+        flex-direction: column !important;
+        justify-content: center !important;
+    }
+}
