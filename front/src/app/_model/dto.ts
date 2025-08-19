@@ -28,6 +28,13 @@ export interface PageableResponseDTO<T> {
   }
 }
 
+export interface ConfirmDataDTO {
+  title?: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+}
+
 export interface CasaDTO {
   id: number;
   nombre: string;

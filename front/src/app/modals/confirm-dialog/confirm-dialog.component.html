@@ -1,0 +1,18 @@
+<div class="bg-white rounded-lg p-6 w-full">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">{{data.title}}</h3>
+    <div class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">{{data.message}}</label>
+        </div>
+    </div>
+    <div class="flex justify-end space-x-3 mt-6">
+        <button type="button" id="cancel-namespace-btn" (click)="onCancel()"
+                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            {{data.cancelText}}
+        </button>
+        <button type="button" (click)="onConfirm()"
+                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">
+            {{data.confirmText}}
+        </button>
+    </div>
+</div>
