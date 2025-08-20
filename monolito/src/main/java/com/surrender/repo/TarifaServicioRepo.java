@@ -36,4 +36,15 @@ public interface TarifaServicioRepo extends IGenericRepo<TarifaServicio, Integer
      * @return Página de tarifas de la casa
      */
     Page<TarifaServicio> findByCasaId(Integer casaId, Pageable pageable);
+    
+    /**
+     * Encuentra las tarifas de servicio de una casa específica filtrando por tipo de servicio o unidad
+     * @param casaId ID de la casa
+     * @param tipoServicio Texto a buscar en tipo de servicio (case insensitive)
+     * @param unidad Texto a buscar en unidad (case insensitive)
+     * @param pageable Configuración de paginación
+     * @return Página de tarifas filtradas de la casa
+     */
+    Page<TarifaServicio> findByCasaIdAndTipoServicioContainingIgnoreCaseOrUnidadContainingIgnoreCase(
+        Integer casaId, String tipoServicio, String unidad, Pageable pageable);
 }

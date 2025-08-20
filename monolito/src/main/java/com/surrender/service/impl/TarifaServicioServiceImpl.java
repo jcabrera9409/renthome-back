@@ -73,11 +73,42 @@ public class TarifaServicioServiceImpl extends CRUDImpl<TarifaServicio, Integer>
     }
 
     @Override
-    public Page<TarifaServicio> filtrarPorCasa(Integer casaId, Pageable pageable) {
-        logger.info("Filtrando tarifas de servicio para casa ID: {} con paginación", casaId);
-        Page<TarifaServicio> page = tarifaServicioRepo.findByCasaId(casaId, pageable);
-        logger.info("Se obtuvo página con {} elementos de {} total para casa {}", 
-            page.getNumberOfElements(), page.getTotalElements(), casaId);
+    public Page<TarifaServicio> filtrarPorCasa(Integer casaId, String filtro, Pageable pageable) {
+        logger.info("Filtrando tarifas de servicio para casa ID: {} con filtro: '{}' y paginación", casaId, filtro);
+        Page<TarifaServicio> page;
+        
+        // Validar si el filtro es válido para búsqueda
+        if (filtro == null || filtro.trim().isEmpty() || isInvalidSearchTerm(filtro.trim())) {
+            // Sin filtro válido, devolver todas las tarifas de la casa
+            logger.info("Filtro no válido o vacío, devolviendo todas las tarifas de la casa {}", casaId);
+            page = tarifaServicioRepo.findByCasaId(casaId, pageable);
+        } else {
+            // Con filtro válido, buscar por tipo de servicio o unidad que contengan el texto
+            String filtroLimpio = filtro.trim();
+            page = tarifaServicioRepo.findByCasaIdAndTipoServicioContainingIgnoreCaseOrUnidadContainingIgnoreCase(
+                casaId, filtroLimpio, filtroLimpio, pageable);
+        }
+        
+        logger.info("Se obtuvo página con {} elementos de {} total para casa {} con filtro '{}'", 
+            page.getNumberOfElements(), page.getTotalElements(), casaId, filtro);
         return page;
+    }
+    
+    /**
+     * Valida si un término de búsqueda es inválido o contiene solo caracteres especiales
+     * @param searchTerm Término a validar
+     * @return true si es inválido, false si es válido
+     */
+    private boolean isInvalidSearchTerm(String searchTerm) {
+        if (searchTerm.length() < 1) {
+            return true;
+        }
+        
+        // Considerar inválidos los términos que solo contengan caracteres especiales comunes
+        String specialCharsOnly = searchTerm.replaceAll("[a-zA-Z0-9\\s]", "");
+        
+        // Si después de quitar letras, números y espacios solo quedan caracteres especiales
+        // y el término original era muy corto, considerarlo inválido
+        return searchTerm.length() <= 2 && specialCharsOnly.length() == searchTerm.length();
     }
 }

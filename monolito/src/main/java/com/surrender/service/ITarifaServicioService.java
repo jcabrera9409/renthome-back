@@ -40,8 +40,9 @@ public interface ITarifaServicioService extends ICRUD<TarifaServicio, Integer> {
     /**
      * Filtra las tarifas de servicio de una casa específica con paginación
      * @param casaId ID de la casa
+     * @param filtro Texto para filtrar por tipo de servicio o unidad
      * @param pageable Configuración de paginación
      * @return Página de tarifas de la casa
      */
-    Page<TarifaServicio> filtrarPorCasa(Integer casaId, Pageable pageable);
+    Page<TarifaServicio> filtrarPorCasa(Integer casaId, String filtro, Pageable pageable);
 }

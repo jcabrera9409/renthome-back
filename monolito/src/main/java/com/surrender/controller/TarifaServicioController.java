@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.surrender.dto.APIResponseDTO;
@@ -96,12 +97,16 @@ public class TarifaServicioController {
     }
 
     @GetMapping("/casa/{casaId}/filtrar")
-    public ResponseEntity<APIResponseDTO<Page<TarifaServicio>>> filtrar(@PathVariable Integer casaId, Pageable pageable) {
-        logger.info("Filtrando tarifas de servicio para casa ID: {} con paginación: página {}, tamaño {}", 
-            casaId, pageable.getPageNumber(), pageable.getPageSize());
-        Page<TarifaServicio> page = tarifaServicioService.filtrarPorCasa(casaId, pageable);
+    public ResponseEntity<APIResponseDTO<Page<TarifaServicio>>> filtrar(
+            @PathVariable Integer casaId, 
+            @RequestParam(required = false, defaultValue = "") String filtro,
+            Pageable pageable) {
+        logger.info("Filtrando tarifas de servicio para casa ID: {} con filtro: '{}' y paginación: página {}, tamaño {}", 
+            casaId, filtro, pageable.getPageNumber(), pageable.getPageSize());
+        Page<TarifaServicio> page = tarifaServicioService.filtrarPorCasa(casaId, filtro, pageable);
         APIResponseDTO<Page<TarifaServicio>> response = APIResponseDTO.success("Página de tarifas de servicio para casa " + casaId, page, 200);
-        logger.info("Página obtenida: {} elementos de {} total para casa {}", page.getNumberOfElements(), page.getTotalElements(), casaId);
+        logger.info("Página obtenida: {} elementos de {} total para casa {} con filtro '{}'", 
+            page.getNumberOfElements(), page.getTotalElements(), casaId, filtro);
         return ResponseEntity.ok(response);
     }
 

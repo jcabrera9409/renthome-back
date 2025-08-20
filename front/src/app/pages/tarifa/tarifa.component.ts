@@ -13,11 +13,12 @@ import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 import { ChangeStatusRequest } from '../../_model/dto';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tarifa',
   standalone: true,
-  imports: [LucideAngularModule, MatDialogModule, LoaderComponent, CommonModule, PaginationComponent],
+  imports: [LucideAngularModule, MatDialogModule, LoaderComponent, CommonModule, PaginationComponent, ReactiveFormsModule],
   templateUrl: './tarifa.component.html',
   styleUrl: './tarifa.component.css'
 })
@@ -25,6 +26,8 @@ export class TarifaComponent implements OnInit {
   readonly plusIcon = PlusIcon;
   readonly chevronLeftIcon = ChevronLeftIcon;
   readonly chevronRightIcon = ChevronRightIcon;
+
+  filtro = new FormControl('');
 
   currentPage = 0;
   pageSize = 10;
@@ -103,6 +106,13 @@ export class TarifaComponent implements OnInit {
     this.getAllTarifas();
   }
 
+  applyFilter(event: Event) {
+    if(event["keyCode"] === 13) {
+      this.currentPage = 0;
+      this.getAllTarifas();
+    }
+  }
+
   private inactivateTarifa(tarifa: Tarifa) {
     this.isLoading = true;
     const changeStatusRequest: ChangeStatusRequest = {
@@ -118,7 +128,7 @@ export class TarifaComponent implements OnInit {
           );
           return EMPTY;
         }),
-        switchMap(() => this.tarifaService.listarPaginado(tarifa.casa.id, '', this.currentPage, this.pageSize)),
+        switchMap(() => this.tarifaService.listarPaginado(tarifa.casa.id, this.filtro.value, this.currentPage, this.pageSize)),
         catchError(error => {
           this.notificationService.setMessageChange(
             Message.error("Ocurrio un error al listar las tarifas.", error)
@@ -150,7 +160,7 @@ export class TarifaComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.tarifaService.listarPaginado(casaSeleccionada.id, '', this.currentPage, this.pageSize)
+    this.tarifaService.listarPaginado(casaSeleccionada.id, this.filtro.value, this.currentPage, this.pageSize)
       .pipe(
         finalize(() => {
           this.isLoading = false;
