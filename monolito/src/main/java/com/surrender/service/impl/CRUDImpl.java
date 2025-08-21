@@ -1,11 +1,13 @@
 package com.surrender.service.impl;
 
-import com.surrender.repo.IGenericRepo;
-import com.surrender.service.ICRUD;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.surrender.repo.IGenericRepo;
+import com.surrender.service.ICRUD;
 
 public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     protected abstract IGenericRepo<T, ID> getRepo();

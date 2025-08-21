@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class PaginationComponent {
 
+  @Input() showItemsPerPage: boolean = true;
   @Input() currentPage: number = 0;
   @Input() pageSize: number = 10;
   @Input() totalElements: number = 0;

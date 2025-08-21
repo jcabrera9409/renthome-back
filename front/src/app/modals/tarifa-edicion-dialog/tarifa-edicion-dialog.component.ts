@@ -61,7 +61,7 @@ export class TarifaEdicionDialogComponent {
     tarifaData.id = this.tarifa ? this.tarifa.id : 0;
     tarifaData.unidad = this.form.value.unidad;
     tarifaData.precioUnidad = this.form.value.precio;
-    tarifaData.activo = true;
+    tarifaData.activo = this.tarifa ? this.tarifa.activo : true;
     tarifaData.rangoInicio = 0;
     tarifaData.rangoFin = 0;
     tarifaData.casa = this.casaService.getCasaStorage();

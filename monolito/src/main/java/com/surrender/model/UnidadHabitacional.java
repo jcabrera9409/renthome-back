@@ -3,6 +3,8 @@ package com.surrender.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,10 @@ public class UnidadHabitacional {
 	
 	@Column(nullable = false)
 	private String nombre;
-	
+
+	@Column(nullable = false, columnDefinition="TEXT")
+	private String descripcion;
+
 	@Column(nullable = false)
 	private boolean incluyeAgua;
 	
@@ -38,6 +43,7 @@ public class UnidadHabitacional {
 	@ManyToOne
 	private Casa casa;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "unidad")
 	private List<Contrato> contratos;
 
@@ -55,6 +61,14 @@ public class UnidadHabitacional {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public boolean isIncluyeAgua() {
