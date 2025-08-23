@@ -88,4 +88,13 @@ public class InquilinoController {
         APIResponseDTO<Page<Inquilino>> response = APIResponseDTO.success("Página de inquilinos", page, 200);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<APIResponseDTO<List<Inquilino>>> listarDisponibles() {
+        logger.info("Listando TODOS los inquilinos disponibles (activos)");
+        List<Inquilino> inquilinos = inquilinoService.listarDisponibles();
+        APIResponseDTO<List<Inquilino>> response = APIResponseDTO.success("Lista completa de inquilinos disponibles", inquilinos, 200);
+        logger.info("Se obtuvieron {} inquilinos disponibles", inquilinos.size());
+        return ResponseEntity.ok(response);
+    }
 }

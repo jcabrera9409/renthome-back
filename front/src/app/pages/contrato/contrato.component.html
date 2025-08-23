@@ -12,7 +12,7 @@
 
         <div class="p-6">
             <div class="mb-4">
-                <input type="text" id="searchContratos" placeholder="Buscar contratos..."
+                <input type="text" id="searchContratos" placeholder="Buscar contratos..." [formControl]="filtro" (keyup)="applyFilter($event)"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
@@ -30,23 +30,35 @@
                         </tr>
                     </thead>
                     <tbody id="contratosTable" class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-gray-900)">A-102</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">Jose Cabrera</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">14/01/2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">14/01/2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">S/ 1200.00</td>
+                        <tr *ngFor="let contrato of contratos">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" style="color: var(--color-gray-900)">{{ contrato.unidad.nombre }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">{{ contrato.inquilino.nombreCompleto }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">{{ contrato.fechaInicio | date:'dd/MM/yyyy' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">{{ contrato.fechaFin | date:'dd/MM/yyyy' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--color-gray-500)">S/ {{ contrato.montoRentaMensual | number: '1.2-2' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-success-100); color: var(--color-success-800)">Activo</span>
+                                <span *ngIf="contrato.activo" class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-success-100); color: var(--color-success-800)">Activo</span>
+                                <span *ngIf="!contrato.activo" class="px-2 py-1 text-xs rounded-full" style="background-color: var(--color-gray-100); color: var(--color-gray-800)">Inactivo</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Editar</button>
-                                <button style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">Ver</button>
+                                <button (click)="openDialog(contrato)" style="color: var(--color-primary-600)" class="hover:opacity-75 transition-opacity">Editar</button>
+                                <button (click)="openDialogConfirm(contrato)" style="color: var(--color-gray-600)" class="hover:opacity-75 transition-opacity">
+                                    {{ contrato.activo ? 'Inactivar' : 'Activar' }}
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <app-pagination
+                [currentPage]="currentPage"
+                [pageSize]="pageSize"
+                [totalElements]="totalElements"
+                [totalPages]="totalPages"
+                (pageChange)="onPageChange($event)"
+                (pageSizeChange)="onPageSizeChange($event)"
+            ></app-pagination>
         </div>
     </div>
 </div>
+<app-loader *ngIf="isLoading"></app-loader>

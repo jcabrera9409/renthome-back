@@ -18,7 +18,7 @@ public class Inquilino {
 	@Column(nullable = false)
 	private String nombreCompleto;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String documentoIdentidad;
 	
 	@Column(nullable = false)
@@ -26,6 +26,9 @@ public class Inquilino {
 	
 	@Column(nullable = false)
 	private String correo;
+
+	@Column(nullable = false)
+	private boolean activo;
 
 	public Integer getId() {
 		return id;
@@ -66,4 +69,12 @@ public class Inquilino {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}	
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
 }
