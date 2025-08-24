@@ -4,4 +4,5 @@ export class Inquilino {
     documentoIdentidad: string;
     telefono: string;
     correo: string;
+    activo: boolean;
 }

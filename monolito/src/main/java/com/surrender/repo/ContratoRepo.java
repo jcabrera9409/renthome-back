@@ -28,6 +28,11 @@ public interface ContratoRepo extends IGenericRepo<Contrato, Integer> {
      */
     List<Contrato> findByUnidadCasaIdAndActivoTrueOrderByFechaInicioDesc(Integer casaId);
     
+    /**
+     * Verifica si un inquilino tiene contratos activos
+     */
+    boolean existsByInquilinoIdAndActivoTrue(Integer inquilinoId);
+    
     // Métodos @Query para búsquedas complejas con OR entre múltiples campos
     
     /**
