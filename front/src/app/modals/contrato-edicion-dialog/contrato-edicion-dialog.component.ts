@@ -64,6 +64,14 @@ export class ContratoEdicionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatosDisponibles();
+
+    this.form.get('fechaInicio')?.valueChanges.subscribe(value => {
+      const fechaInicio = new Date(value);
+      const fechaFin = new Date(fechaInicio);
+      fechaFin.setFullYear(fechaFin.getFullYear() + 1);
+      this.form.get('fechaFin')?.setValue(fechaFin.toISOString().split('T')[0]);
+    });
+
   }
 
   onSubmit(): void {

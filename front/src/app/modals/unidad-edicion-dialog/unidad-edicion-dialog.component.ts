@@ -54,6 +54,7 @@ export class UnidadEdicionDialogComponent {
       this.notificationService.setMessageChange(
         Message.error('Por favor, complete todos los campos requeridos.')
       );
+      return;
     }
 
     this.isLoading = true;

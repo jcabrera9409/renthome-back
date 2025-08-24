@@ -1,0 +1,60 @@
+/* Layout responsive fixes */
+.main-layout-desktop {
+  height: calc(100vh - 4rem); /* Altura completa menos el header (h-16 = 4rem) */
+}
+
+/* Sidebar responsivo */
+@media (max-width: 1024px) {
+  .content-desktop {
+    margin-left: 0 !important;
+  }
+  
+  #sidebar {
+    top: 4rem; /* Mantener la posición bajo el header en móviles también */
+  }
+}
+
+/* Asegurar que el header quede fijo */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60; /* Mayor que el sidebar (z-50) */
+}
+
+/* Ajustar el body para que no se sobreponga con el header fijo */
+#dashboardScreen {
+  padding-top: 4rem; /* Altura del header */
+}
+
+/* Sidebar siempre bajo el header */
+#sidebar {
+  position: fixed;
+  top: 4rem; /* Altura del header */
+  height: calc(100vh - 4rem);
+}
+
+/* Overlay responsivo - asegurar visibilidad */
+#sidebarOverlay {
+  position: fixed !important;
+  top: 4rem !important; /* Empezar bajo el header */
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 40 !important;
+}
+
+/* Asegurar que el overlay cubra correctamente en móvil */
+@media (max-width: 1024px) {
+  #sidebarOverlay {
+    top: 4rem !important; /* Mantener bajo el header */
+    height: calc(100vh - 4rem) !important;
+  }
+  
+  /* Cuando está visible en móvil */
+  #sidebarOverlay:not(.hidden) {
+    display: block !important;
+  }
+}

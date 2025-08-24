@@ -7,6 +7,7 @@ import { NotificationService } from '../../_service/notification.service';
 import { Message } from '../../_model/message';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../_service/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -36,6 +37,7 @@ export class LayoutComponent implements OnInit {
   casaControl = new FormControl<CasaDTO | null>(null);
 
   constructor(
+    private authService: AuthService,
     private router: Router,
     private casaService: CasaService,
     private notificationService: NotificationService
@@ -57,6 +59,16 @@ export class LayoutComponent implements OnInit {
         this.casaControl.setValue(this.casaService.getCasaStorage(), { emitEvent: false });
       }
     });
+  }
+
+  onTabClick() {
+    if (!this.isDesktop) {
+      this.toggleSidebar();
+    }
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
   listarCasas() {

@@ -1,5 +1,5 @@
 <div id="dashboardScreen" class="min-h-screen bg-gray-50">
-    <header class="bg-white shadow-sm border-b">
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b z-60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-4">
@@ -22,7 +22,7 @@
                         </select>
                     </div>
 
-                    <button id="logoutBtn" class="text-gray-500 hover:text-gray-700">
+                    <button id="logoutBtn" class="text-gray-500 hover:text-gray-700" (click)="onLogout()">
                         <i-lucide [img]="logoutIcon" class="w-5 h-5"></i-lucide>
                     </button>
                 </div>
@@ -30,14 +30,14 @@
         </div>
     </header>
 
-    <div class="main-layout-desktop main-layout-mobile">
+    <div class="main-layout-desktop main-layout-mobile flex">
         <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r transform transition-transform duration-300 ease-in-out {{getSidebarClass}}">
-            <div class="pt-16 lg:pt-0 h-full">
+            class="fixed top-16 bottom-0 left-0 z-50 w-64 bg-white shadow-lg border-r transform transition-transform duration-300 ease-in-out {{getSidebarClass}}">
+            <div class="h-full">
                 <nav class="p-4 h-full">
                     <ul class="space-y-2">
                         <li>
-                            <button [routerLink]="['/admin']"
+                            <button [routerLink]="['/admin']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('')}}"
                                 data-tab="dashboard">
                                 <i-lucide [img]="layoutDashboardIcon" class="w-5 h-5"></i-lucide>
@@ -45,7 +45,7 @@
                             </button>
                         </li>
                         <li>
-                            <button [routerLink]="['/admin/tarifa']"
+                            <button [routerLink]="['/admin/tarifa']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('tarifa')}}"
                                 data-tab="tarifas">
                                 <i-lucide [img]="creditCardIcon" class="w-5 h-5"></i-lucide>
@@ -53,7 +53,7 @@
                             </button>
                         </li>
                         <li>
-                            <button [routerLink]="['/admin/unidad']"
+                            <button [routerLink]="['/admin/unidad']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('unidad')}}"
                                 data-tab="unidades">
                                 <i-lucide [img]="houseIcon" class="w-5 h-5"></i-lucide>
@@ -61,7 +61,7 @@
                             </button>
                         </li>
                         <li>
-                            <button [routerLink]="['/admin/contrato']"
+                            <button [routerLink]="['/admin/contrato']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('contrato')}}"
                                 data-tab="contratos">
                                 <i-lucide [img]="fileTextIcon" class="w-5 h-5"></i-lucide>
@@ -69,7 +69,7 @@
                             </button>
                         </li>
                         <li>
-                            <button [routerLink]="['/admin/inquilino']"
+                            <button [routerLink]="['/admin/inquilino']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('inquilino')}}"
                                 data-tab="inquilinos">
                                 <i-lucide [img]="usersIcon" class="w-5 h-5"></i-lucide>
@@ -77,7 +77,7 @@
                             </button>
                         </li>
                         <li>
-                            <button [routerLink]="['/admin/recibo']"
+                            <button [routerLink]="['/admin/recibo']" (click)="onTabClick()"
                                 class="nav-tab w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors {{getCssTabPage('recibo')}}"
                                 data-tab="recibos">
                                 <i-lucide [img]="receiptIcon" class="w-5 h-5"></i-lucide>
@@ -89,10 +89,10 @@
             </div>
         </aside>
 
-        <div id="sidebarOverlay" (click)="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-40 {{this.getOverlayClass}} lg:hidden"></div>
+        <div id="sidebarOverlay" (click)="toggleSidebar()" class="{{this.getOverlayClass}} lg:hidden"></div>
 
         <!-- Main Content Area -->
-        <div class="content-desktop flex-1 px-4 sm:px-6 lg:px-8 py-8 {{this.getMainContentClass}}" id="mainContent">
+        <div class="content-desktop flex-1 px-4 sm:px-6 lg:px-8 py-8 lg:ml-64 {{this.getMainContentClass}}" id="mainContent">
             <router-outlet></router-outlet>
         </div>
 
