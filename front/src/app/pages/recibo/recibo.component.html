@@ -13,10 +13,8 @@
         <div class="p-6">
             <div class="mb-4 flex space-x-4 flex-responsive">
                 <div class="custom-select">
-                    <select id="mesSelector">
-                        <option value="07-2025">Julio 2025</option>
-                        <option value="06-2025">Junio 2025</option>
-                        <option value="05-2025">Mayo 2025</option>
+                    <select id="mesSelector" [formControl]="periodo">
+                        <option *ngFor="let periodo of periodos" [value]="periodo">{{ this.convertPeriodoToString(periodo) }}</option>
                     </select>
                 </div>
                 <input type="text" id="searchRecibos" placeholder="Buscar recibos..." style="width: 100%;" [formControl]="filtro" (keyup)="applyFilter($event)"

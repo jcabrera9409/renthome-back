@@ -10,5 +10,6 @@ import com.surrender.model.Recibo;
 
 public interface IReciboService extends ICRUD<Recibo, Integer> {
     List<Recibo> generarRecibosPorPeriodo(Integer casaId, YearMonth periodo);
-    Page<Recibo> filtrarPorCasa(Integer casaId, String filtro, Pageable pageable);
+    Page<Recibo> filtrarPorCasaYPeriodo(Integer casaId, String filtro, YearMonth periodo, Pageable pageable);
+    List<YearMonth> obtenerPeriodosPorCasa(Integer casaId);
 }

@@ -69,23 +69,31 @@ public class ReciboServiceImpl extends CRUDImpl<Recibo, Integer> implements IRec
     }
 
     @Override
-    public Page<Recibo> filtrarPorCasa(Integer casaId, String filtro, Pageable pageable) {
-        logger.info("Filtrando recibos para casa ID: {} con filtro: '{}' y paginación", casaId, filtro);
+    public List<YearMonth> obtenerPeriodosPorCasa(Integer casaId) {
+        logger.info("Obteniendo periodos únicos para casa ID: {}", casaId);
+        List<YearMonth> periodos = reciboRepo.findDistinctPeriodosByCasaId(casaId);
+        logger.info("Se encontraron {} periodos únicos para casa ID: {}", periodos.size(), casaId);
+        return periodos;
+    }
+
+    @Override
+    public Page<Recibo> filtrarPorCasaYPeriodo(Integer casaId, String filtro, YearMonth periodo, Pageable pageable) {
+        logger.info("Filtrando recibos para casa ID: {} con filtro: '{}', periodo: {} y paginación", casaId, filtro, periodo);
         Page<Recibo> page;
         
         // Validar si el filtro es válido para búsqueda
         if (filtro == null || filtro.trim().isEmpty() || isInvalidSearchTerm(filtro.trim())) {
-            // Sin filtro válido, devolver todos los recibos de la casa usando método JPA automático
-            logger.info("Filtro no válido o vacío, devolviendo todos los recibos de la casa {}", casaId);
-            page = reciboRepo.findByContratoUnidadCasaIdOrderByPeriodoDescContratoUnidadNombreAsc(casaId, pageable);
+            // Sin filtro válido, devolver todos los recibos de la casa para el periodo específico
+            logger.info("Filtro no válido o vacío, devolviendo todos los recibos de la casa {} para el periodo {}", casaId, periodo);
+            page = reciboRepo.findByContratoUnidadCasaIdAndPeriodoOrderByContratoUnidadNombreAsc(casaId, periodo, pageable);
         } else {
-            // Con filtro válido, usar búsqueda compleja con OR entre múltiples campos
+            // Con filtro válido, usar búsqueda compleja con OR entre múltiples campos y filtro por periodo
             String filtroLimpio = filtro.trim();
-            page = reciboRepo.findByCasaIdWithMultiFieldFilter(casaId, filtroLimpio, pageable);
+            page = reciboRepo.findByCasaIdPeriodoWithMultiFieldFilter(casaId, periodo, filtroLimpio, pageable);
         }
         
-        logger.info("Se obtuvo página con {} elementos de {} total para casa {} con filtro '{}'", 
-            page.getNumberOfElements(), page.getTotalElements(), casaId, filtro);
+        logger.info("Se obtuvo página con {} elementos de {} total para casa {} con filtro '{}' y periodo {}", 
+            page.getNumberOfElements(), page.getTotalElements(), casaId, filtro, periodo);
         return page;
     }
     

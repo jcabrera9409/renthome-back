@@ -14,30 +14,36 @@ import com.surrender.model.Recibo;
 public interface ReciboRepo extends IGenericRepo<Recibo, Integer> {
 
     /**
-     * Obtiene todos los recibos de un periodo y lista de contratos
-     */
-    List<Recibo> findByPeriodoAndContratoIn(YearMonth periodo, List<Contrato> contratos);
-
-    /**
      * Verifica si existe un recibo para un periodo y contrato específicos
      */
     boolean existsByPeriodoAndContrato(YearMonth periodo, Contrato contrato);
 
     /**
-     * Obtiene todos los recibos de una casa ordenados por período (desc) y unidad (asc)
+     * Obtiene los periodos únicos de recibos de una casa específica ordenados de manera descendente
      */
-    Page<Recibo> findByContratoUnidadCasaIdOrderByPeriodoDescContratoUnidadNombreAsc(Integer casaId, Pageable pageable);
+    @Query("SELECT DISTINCT r.periodo FROM Recibo r " +
+           "JOIN r.contrato c " +
+           "JOIN c.unidad u " +
+           "WHERE u.casa.id = :casaId " +
+           "ORDER BY r.periodo DESC")
+    List<YearMonth> findDistinctPeriodosByCasaId(@Param("casaId") Integer casaId);
 
     /**
-     * Filtra recibos por casa con búsqueda en unidad o inquilino
+     * Filtra recibos por casa, periodo y búsqueda en unidad o inquilino
      */
     @Query("SELECT r FROM Recibo r " +
            "JOIN r.contrato c " +
            "JOIN c.unidad u " +
            "JOIN c.inquilino i " +
            "WHERE u.casa.id = :casaId " +
-           "AND LOWER(u.nombre) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
-           "OR LOWER(i.nombreCompleto) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
+           "AND r.periodo = :periodo " +
+           "AND (LOWER(u.nombre) LIKE LOWER(CONCAT('%', :filtro, '%')) " +
+           "OR LOWER(i.nombreCompleto) LIKE LOWER(CONCAT('%', :filtro, '%'))) " +
            "ORDER BY u.nombre ASC")
-    Page<Recibo> findByCasaIdWithMultiFieldFilter(@Param("casaId") Integer casaId, @Param("filtro") String filtro, Pageable pageable);
+    Page<Recibo> findByCasaIdPeriodoWithMultiFieldFilter(@Param("casaId") Integer casaId, @Param("periodo") YearMonth periodo, @Param("filtro") String filtro, Pageable pageable);
+
+    /**
+     * Obtiene todos los recibos de una casa para un periodo específico ordenados por unidad
+     */
+    Page<Recibo> findByContratoUnidadCasaIdAndPeriodoOrderByContratoUnidadNombreAsc(Integer casaId, YearMonth periodo, Pageable pageable);
 }

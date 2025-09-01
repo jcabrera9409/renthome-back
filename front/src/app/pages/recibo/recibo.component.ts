@@ -27,6 +27,7 @@ export class ReciboComponent implements OnInit {
   readonly receiptIcon = ReceiptIcon;
 
   filtro = new FormControl('');
+  periodo = new FormControl('');
 
   currentPage = 0;
   pageSize = 10;
@@ -35,16 +36,17 @@ export class ReciboComponent implements OnInit {
 
   isLoading = false;
   recibos: Recibo[] = [];
+  periodos: string[] = [];
 
   constructor(
     private casaService: CasaService,
     private reciboService: ReciboService,
     private notificationService: NotificationService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.getAllRecibos();
+    this.cargarDatosDisponibles();
 
     this.reciboService.getObjetoPageableCambio().subscribe({
       next: (response) => {
@@ -62,11 +64,30 @@ export class ReciboComponent implements OnInit {
       }
     });
 
+    this.reciboService.getPeriodoCambio().subscribe({
+      next: (data) => {
+        if (this.periodos.includes(data)) {
+          this.periodo.setValue(data);
+          this.getAllRecibos();
+        } else {
+          this.cargarDatosDisponibles(data);
+        }
+      }
+    });
+
     this.casaService.getCasaSeleccionada().subscribe({
       next: () => {
+        this.cargarDatosDisponibles();
+      }
+    });
+    
+    this.periodo.valueChanges.subscribe({
+      next: () => {
+        this.currentPage = 0;
         this.getAllRecibos();
       }
     });
+
   }
 
   openEditDialog(recibo?: Recibo) {
@@ -101,7 +122,7 @@ export class ReciboComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    if(event["keyCode"] === 13) {
+    if (event["keyCode"] === 13) {
       this.currentPage = 0;
       this.getAllRecibos();
     }
@@ -109,13 +130,16 @@ export class ReciboComponent implements OnInit {
 
   private getAllRecibos() {
     const casaSeleccionada = this.casaService.getCasaStorage();
+    const periodoSeleccionado = this.periodo.value;
+    const year: number = +periodoSeleccionado.split('-')[0];
+    const month: number = +periodoSeleccionado.split('-')[1];
     if (!casaSeleccionada) {
       this.reciboService.setObjetoPageableCambio(null);
       return;
     }
 
     this.isLoading = true;
-    this.reciboService.listarPaginado(casaSeleccionada.id, this.filtro.value, this.currentPage, this.pageSize)
+    this.reciboService.listarPaginadoPeriodo(casaSeleccionada.id, year, month, this.filtro.value, this.currentPage, this.pageSize)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -131,6 +155,82 @@ export class ReciboComponent implements OnInit {
           );
         }
       })
+  }
+
+  private cargarDatosDisponibles(dataPeriodo?: string): void {
+    const casaId = this.casaService.getCasaStorage().id;
+    this.isLoading = true;
+
+    this.reciboService.obtenerPeriodos(casaId)
+      .subscribe({
+        next: (response) => {
+          this.periodos = response.data;
+          if (this.periodos.length > 0) {
+            if (dataPeriodo && this.periodos.includes(dataPeriodo)) {
+              this.periodo.setValue(dataPeriodo);
+            } else {
+              this.periodo.setValue(this.periodos[0]);
+            }
+            this.getAllRecibos();
+          }
+        },
+        error: (error) => {
+          this.notificationService.setMessageChange(
+            Message.error("Error al cargar los periodos", error)
+          );
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+  }
+
+  convertPeriodoToString(periodo: string): string {
+    let data = '';
+    const parts = periodo.split('-');
+    const year = parts[0];
+    const month = parts[1];
+
+    switch (month) {
+      case '01':
+        data = `Enero ${year}`;
+        break;
+      case '02':
+        data = `Febrero ${year}`;
+        break;
+      case '03':
+        data = `Marzo ${year}`;
+        break;
+      case '04':
+        data = `Abril ${year}`;
+        break;
+      case '05':
+        data = `Mayo ${year}`;
+        break;
+      case '06':
+        data = `Junio ${year}`;
+        break;
+      case '07':
+        data = `Julio ${year}`;
+        break;
+      case '08':
+        data = `Agosto ${year}`;
+        break;
+      case '09':
+        data = `Septiembre ${year}`;
+        break;
+      case '10':
+        data = `Octubre ${year}`;
+        break;
+      case '11':
+        data = `Noviembre ${year}`;
+        break;
+      case '12':
+        data = `Diciembre ${year}`;
+        break;
+    }
+
+    return data;
   }
 
 }

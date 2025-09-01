@@ -59,11 +59,11 @@ export class ReciboPeriodoDialogComponent implements OnInit {
 
   private setDefaultValues() {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // getMonth() retorna 0-11
+    const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
     
     this.form.patchValue({
-      mes: currentMonth,
+      mes: currentMonth < 10 ? '0' + currentMonth : currentMonth,
       anio: currentYear
     });
   }
@@ -101,20 +101,13 @@ export class ReciboPeriodoDialogComponent implements OnInit {
           )
           return EMPTY;
         }),
-        switchMap(() => this.reciboService.listarPaginado(casaId, '', 0, 10)),
-        catchError(error => {
-          this.notificationService.setMessageChange(
-            Message.error('Ocurrio un error al listar los recibos.', error)
-          );
-          return EMPTY;
-        }),
         finalize(() => {
           this.isLoading = false;
         })
       )
       .subscribe((response) => {
         if (response.success) {
-          this.reciboService.setObjetoPageableCambio(response.data);
+          this.reciboService.setPeriodoCambio(`${this.form.value.anio}-${this.form.value.mes}`);
           this.notificationService.setMessageChange(
             Message.success('Recibos generados exitosamente.')
           );

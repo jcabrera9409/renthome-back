@@ -56,24 +56,44 @@ public class ReciboController {
         }
     }
 
-    @GetMapping("/casa/{casaId}/filtrar")
+    @GetMapping("/casa/{casaId}/filtrar/{year}/{month}")
     public ResponseEntity<APIResponseDTO<Page<Recibo>>> filtrar(
             @PathVariable Integer casaId,
+            @PathVariable int year,
+            @PathVariable int month,
             @RequestParam(required = false, defaultValue = "") String filtro,
             Pageable pageable) {
-        logger.info("Filtrando recibos para casa ID: {} con filtro: '{}' y paginación: página {}, tamaño {}", 
-            casaId, filtro, pageable.getPageNumber(), pageable.getPageSize());
+        logger.info("Filtrando recibos para casa ID: {} con filtro: '{}', periodo: {}-{} y paginación: página {}, tamaño {}", 
+            casaId, filtro, year, month, pageable.getPageNumber(), pageable.getPageSize());
         
         try {
-            Page<Recibo> page = reciboService.filtrarPorCasa(casaId, filtro, pageable);
+            YearMonth periodo = YearMonth.of(year, month);
+            Page<Recibo> page = reciboService.filtrarPorCasaYPeriodo(casaId, filtro, periodo, pageable);
             APIResponseDTO<Page<Recibo>> response = APIResponseDTO.success("Página de recibos para casa " + casaId, page, 200);
-            logger.info("Página obtenida: {} elementos de {} total para casa {} con filtro '{}'", 
-                page.getNumberOfElements(), page.getTotalElements(), casaId, filtro);
+            logger.info("Página obtenida: {} elementos de {} total para casa {} con filtro '{}' y periodo {}-{}", 
+                page.getNumberOfElements(), page.getTotalElements(), casaId, filtro, year, month);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            logger.error("Error al filtrar recibos para casa {} con filtro '{}': {}", casaId, filtro, e.getMessage(), e);
+            logger.error("Error al filtrar recibos para casa {} con filtro '{}' y periodo {}-{}: {}", casaId, filtro, year, month, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 APIResponseDTO.error("Error interno al filtrar recibos", HttpStatus.INTERNAL_SERVER_ERROR.value())
+            );
+        }
+    }
+
+    @GetMapping("/casa/{casaId}/periodos")
+    public ResponseEntity<APIResponseDTO<List<YearMonth>>> obtenerPeriodos(@PathVariable Integer casaId) {
+        logger.info("Obteniendo periodos para casa ID: {}", casaId);
+        
+        try {
+            List<YearMonth> periodos = reciboService.obtenerPeriodosPorCasa(casaId);
+            APIResponseDTO<List<YearMonth>> response = APIResponseDTO.success("Periodos obtenidos exitosamente", periodos, HttpStatus.OK.value());
+            logger.info("Se obtuvieron {} periodos para casa ID: {}", periodos.size(), casaId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error al obtener periodos para casa {}: {}", casaId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                APIResponseDTO.error("Error interno al obtener periodos", HttpStatus.INTERNAL_SERVER_ERROR.value())
             );
         }
     }
