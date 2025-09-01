@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Contrato {
 	private UnidadHabitacional unidad;
 	
 	@OneToMany(mappedBy = "contrato")
+	@JsonIgnore
 	private List<Recibo> recibos;
 
 	public Integer getId() {

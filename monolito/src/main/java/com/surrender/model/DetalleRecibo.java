@@ -1,5 +1,7 @@
 package com.surrender.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tblDetalleContrato")
+@Table(name = "tblDetalleRecibo")
 public class DetalleRecibo {
 
 	@Id
@@ -23,6 +25,7 @@ public class DetalleRecibo {
 	private float monto;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Recibo recibo;
 
 	public Integer getId() {

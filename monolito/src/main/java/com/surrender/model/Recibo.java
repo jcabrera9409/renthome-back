@@ -82,6 +82,6 @@ public class Recibo {
 	}
 
 	public void setDetalle(List<DetalleRecibo> detalle) {
-		this.detalle = detalle != null ? new ArrayList<>(detalle) : new ArrayList<>();
+		this.detalle = detalle;
 	}
 }
