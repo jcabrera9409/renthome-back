@@ -44,7 +44,7 @@ export class ContratoEdicionDialogComponent implements OnInit {
     private renderer: Renderer2,
     @Inject(MAT_DIALOG_DATA) private contrato: Contrato | null
   ) {
-    this.casaActual = casaService.getCasaStorage();
+    this.casaActual = this.casaService.getCasaStorage();
 
     const fechaInicio = new Date();
     const fechaFin = new Date(fechaInicio);

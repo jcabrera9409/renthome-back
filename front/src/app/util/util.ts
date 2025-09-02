@@ -13,6 +13,54 @@ export class UtilMethods {
         return UtilMethods.utilMethods;
     }
 
+    convertPeriodoToString(periodo: string): string {
+        let data = '';
+        const parts = periodo.split('-');
+        const year = parts[0];
+        const month = parts[1];
+
+        switch (month) {
+            case '01':
+                data = `Enero ${year}`;
+                break;
+            case '02':
+                data = `Febrero ${year}`;
+                break;
+            case '03':
+                data = `Marzo ${year}`;
+                break;
+            case '04':
+                data = `Abril ${year}`;
+                break;
+            case '05':
+                data = `Mayo ${year}`;
+                break;
+            case '06':
+                data = `Junio ${year}`;
+                break;
+            case '07':
+                data = `Julio ${year}`;
+                break;
+            case '08':
+                data = `Agosto ${year}`;
+                break;
+            case '09':
+                data = `Septiembre ${year}`;
+                break;
+            case '10':
+                data = `Octubre ${year}`;
+                break;
+            case '11':
+                data = `Noviembre ${year}`;
+                break;
+            case '12':
+                data = `Diciembre ${year}`;
+                break;
+        }
+
+        return data;
+    }
+
     public getJwtToken(): string {
         let token = sessionStorage.getItem(UtilMethods.envService.getTokenName);
         return token;
@@ -48,7 +96,7 @@ export class UtilMethods {
         return this.extractJwtPayload(token);
     }
 
-     private extractJwtPayload(token: string): any {
+    private extractJwtPayload(token: string): any {
         if (!token) {
             return null;
         }

@@ -1,0 +1,35 @@
+/* Estilos para impresión - Alternativa usando CSS @media print */
+@media print {
+  /* Ocultar todo excepto el contenido del modal */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Mostrar solo el contenido del modal */
+  #modalContent,
+  #modalContent * {
+    visibility: visible;
+  }
+  
+  /* Posicionar el contenido del modal en la parte superior de la página */
+  #modalContent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  /* Ocultar elementos que no deben imprimirse */
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Ajustar colores para impresión */
+  .text-gray-600 {
+    color: #374151 !important;
+  }
+  
+  .text-gray-900 {
+    color: #111827 !important;
+  }
+}

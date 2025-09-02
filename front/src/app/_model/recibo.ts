@@ -6,7 +6,7 @@ export class Recibo {
     montoTotal: number;
     pagado: boolean;
     contrato: Contrato
-    detalle: DetalleRecibo;
+    detalle: DetalleRecibo[] = [];
 }
 
 export class DetalleRecibo {

@@ -3,42 +3,42 @@
         <div class="p-6">
             <div class="text-center mb-6">
                 <h3 class="text-xl font-bold text-gray-900">RECIBO DE ALQUILER</h3>
-                <p class="text-gray-600">Período: 07-2025</p>
+                <p class="text-gray-600">Período: {{utilMethods.convertPeriodoToString(recibo.periodo)}}</p>
             </div>
 
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-2">Propiedad</h4>
-                    <p class="text-sm text-gray-600">Casa Vista Hermosa</p>
-                    <p class="text-sm text-gray-600">Unidad: A-102</p>
+                    <p class="text-sm text-gray-600">{{recibo.contrato.unidad.casa.nombre}}</p>
+                    <p class="text-sm text-gray-600">Unidad: {{recibo.contrato.unidad.nombre}}</p>
                 </div>
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-2">Inquilino</h4>
-                    <p class="text-sm text-gray-600">Jose Cabrera</p>
-                    <p class="text-sm text-gray-600">72955711</p>
+                    <p class="text-sm text-gray-600">{{recibo.contrato.inquilino.nombreCompleto}}</p>
+                    <p class="text-sm text-gray-600">DNI: {{recibo.contrato.inquilino.documentoIdentidad}}</p>
                 </div>
             </div>
 
             <div class="border-t pt-4">
                 <h4 class="font-semibold text-gray-900 mb-3">Detalle de Servicios</h4>
                 <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Alquiler</span>
-                        <span class="font-medium">S/ 800.00</span>
+                    <div *ngFor="let item of recibo.detalle" class="flex justify-between">
+                        <span class="text-gray-600">{{item.descripcion}}</span>
+                        <span class="font-medium">S/ {{item.monto | number: '1.2-2'}}</span>
                     </div>
                 </div>
                 <div class="border-t mt-4 pt-4">
                     <div class="flex justify-between text-lg font-bold">
                         <span>Total:</span>
-                        <span>S/ 800.00</span>
+                        <span>S/ {{recibo.montoTotal | number: '1.2-2'}}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="flex space-x-3 pt-6">
-                <button type="button"
+            <div class="flex space-x-3 pt-6 no-print">
+                <button type="button" (click)="onClose()"
                     class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400">Cerrar</button>
-                <button type="button"
+                <button type="button" (click)="onPrint()"
                     class="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700">Imprimir</button>
             </div>
         </div>

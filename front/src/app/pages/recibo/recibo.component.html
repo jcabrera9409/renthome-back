@@ -14,7 +14,7 @@
             <div class="mb-4 flex space-x-4 flex-responsive">
                 <div class="custom-select">
                     <select id="mesSelector" [formControl]="periodo">
-                        <option *ngFor="let periodo of periodos" [value]="periodo">{{ this.convertPeriodoToString(periodo) }}</option>
+                        <option *ngFor="let periodo of periodos" [value]="periodo">{{ utilMethods.convertPeriodoToString(periodo) }}</option>
                     </select>
                 </div>
                 <input type="text" id="searchRecibos" placeholder="Buscar recibos..." style="width: 100%;" [formControl]="filtro" (keyup)="applyFilter($event)"

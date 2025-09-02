@@ -14,6 +14,7 @@ import { NotificationService } from '../../_service/notification.service';
 import { ReciboService } from '../../_service/recibo.service';
 import { finalize } from 'rxjs';
 import { Message } from '../../_model/message';
+import { UtilMethods } from '../../util/util';
 
 @Component({
   selector: 'app-recibo',
@@ -37,6 +38,8 @@ export class ReciboComponent implements OnInit {
   isLoading = false;
   recibos: Recibo[] = [];
   periodos: string[] = [];
+
+  utilMethods = UtilMethods.getInstance();
 
   constructor(
     private casaService: CasaService,
@@ -91,21 +94,21 @@ export class ReciboComponent implements OnInit {
   }
 
   openEditDialog(recibo?: Recibo) {
-    const dialogRef = this.dialog.open(ReciboEdicionDialogComponent, {
+    this.dialog.open(ReciboEdicionDialogComponent, {
       data: recibo,
       panelClass: 'w-full'
     });
   }
 
   openViewDialog(recibo: Recibo) {
-    const dialogRef = this.dialog.open(ReciboVerDialogComponent, {
+    this.dialog.open(ReciboVerDialogComponent, {
       data: recibo,
       panelClass: 'w-full'
     });
   }
 
   openGenerateDialog() {
-    const dialogRef = this.dialog.open(ReciboPeriodoDialogComponent, {
+    this.dialog.open(ReciboPeriodoDialogComponent, {
       data: null,
     });
   }
@@ -184,53 +187,4 @@ export class ReciboComponent implements OnInit {
         }
       });
   }
-
-  convertPeriodoToString(periodo: string): string {
-    let data = '';
-    const parts = periodo.split('-');
-    const year = parts[0];
-    const month = parts[1];
-
-    switch (month) {
-      case '01':
-        data = `Enero ${year}`;
-        break;
-      case '02':
-        data = `Febrero ${year}`;
-        break;
-      case '03':
-        data = `Marzo ${year}`;
-        break;
-      case '04':
-        data = `Abril ${year}`;
-        break;
-      case '05':
-        data = `Mayo ${year}`;
-        break;
-      case '06':
-        data = `Junio ${year}`;
-        break;
-      case '07':
-        data = `Julio ${year}`;
-        break;
-      case '08':
-        data = `Agosto ${year}`;
-        break;
-      case '09':
-        data = `Septiembre ${year}`;
-        break;
-      case '10':
-        data = `Octubre ${year}`;
-        break;
-      case '11':
-        data = `Noviembre ${year}`;
-        break;
-      case '12':
-        data = `Diciembre ${year}`;
-        break;
-    }
-
-    return data;
-  }
-
 }
